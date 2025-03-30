@@ -48,6 +48,7 @@ export default function Login() {
 
         // Store role in localStorage
         localStorage.setItem("userRole", userRole);
+        localStorage.setItem("expiry_date",decoded.exp)
 
         if (userRole === "admin" || userRole === "vendor") {
           navigate('/dashboard'); // Redirect admin or vendor to dashboard

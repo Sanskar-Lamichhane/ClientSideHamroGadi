@@ -252,8 +252,19 @@ const Header = () => {
 
   // Get token from localStorage
   const accessToken = localStorage.getItem("access_token");
-  const userRole = localStorage.getItem("userRole")
+ // const userRole = localStorage.getItem("userRole")
   
+ const getUserRole = () => {
+  const expiry = localStorage.getItem("expiry_date");
+  if (!expiry || new Date().getTime() > expiry) {
+      localStorage.removeItem("userRole");
+      localStorage.removeItem("expiry_date");
+      return null;
+  }
+  return localStorage.getItem("userRole");
+};
+
+const userRole=getUserRole();
   // Get user from Redux store
   const userReduxStore = useSelector((store) => store.user.value);
 
