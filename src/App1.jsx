@@ -17,6 +17,10 @@ import OtpVerification from "./OtpVerification.jsx"
 import PasswordResetVerification from "./ResetPassword.jsx"
 import NotFound from "./404.jsx"
 import App2 from "./App2.jsx"
+import MyBookings from "./MyBookings.jsx"
+import VehicleDashboard from "./MyBookings.jsx"
+import RentalDetailsPage from "./singleRentalPage.jsx"
+
 
 function App1() {
   // Use selector to get user role (assuming you have a role in your store)
@@ -44,6 +48,11 @@ function App1() {
               <Route path="" element={<Cart />} />
             </Route>
 
+            {/* <Route path="/MyBookings" element={<MyBookings/>}/> */}
+            <Route path="/MyBookings" element={<ProtectedRoutes role='customer'/>}> 
+                            <Route path="" element={<VehicleDashboard />} />
+                            <Route path=":id" element={<RentalDetailsPage/>}/>
+                        </Route>
             <Route path="/login" element={<Login />} />
             <Route path="/SignUp" element={<SignUp />} />
             <Route path="/forgot-password" element={<ForgotPassword />} />

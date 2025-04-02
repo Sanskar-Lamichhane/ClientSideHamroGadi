@@ -1,14 +1,32 @@
 import React, { useState, useEffect } from 'react';
-import { Car, Eye, AlertCircle } from 'lucide-react';
+import { Car, Eye, AlertCircle, Clock, CheckCircle, XCircle, MapPin, Truck } from 'lucide-react';
 import axios from 'axios';
 import { toast, Bounce } from 'react-toastify';
-import { Link } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
-function CompletedVehiclesDashboard() {
+function VehicleDashboard() {
     const [vehiclesList, setVehiclesList] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [currentStatus, setCurrentStatus] = useState("Pending");
     const navigate=useNavigate();
+
+    const statusIcons = {
+        "Pending": <Clock className="mr-1" size={14} />,
+        "Cancelled": <AlertCircle className="mr-1" size={14} />,
+        "Approved": <CheckCircle className="mr-1" size={14} />,
+        "Rejected": <XCircle className="mr-1" size={14} />,
+        "Completed": <CheckCircle className="mr-1" size={14} />,
+        "In Trip": <MapPin className="mr-1" size={14} />
+    };
+
+    const statusColors = {
+        "Pending": "bg-yellow-100 text-yellow-800",
+        "Cancelled": "bg-red-100 text-red-800",
+        "Approved": "bg-green-100 text-green-800",
+        "Rejected": "bg-gray-100 text-gray-800",
+        "Completed": "bg-blue-100 text-blue-800",
+        "In Trip": "bg-purple-100 text-purple-800"
+    };
 
     const getUserRole = () => {
         const expiry = localStorage.getItem("expiry_date");
@@ -23,30 +41,52 @@ function CompletedVehiclesDashboard() {
     const userRole = getUserRole();
 
     useEffect(() => {
-        fetchCompletedVehicles();
-    }, []);
+        fetchVehicles(currentStatus);
+    }, [currentStatus]);
 
-    const fetchCompletedVehicles = () => {
+    const fetchVehicles = (status) => {
         const token = localStorage.getItem("access_token");
         setLoading(true);
-        if (userRole === "vendor"){
-        axios.post("http://localhost:3000/api/vendor/rentalList",
+        
+        let endpoint = "";
+        if (userRole === "vendor") {
+            endpoint = "http://localhost:3000/api/vendor/rentalList";
+        } else if (userRole === "admin") {
+            endpoint = "http://localhost:3000/api/admin/rentalList";
+        } else if (userRole === "customer") {
+            endpoint = "http://localhost:3000/api/customer/rental";
+        } else {
+            setLoading(false);
+            toast.error("User role not recognized", {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "colored",
+                transition: Bounce,
+            });
+            return;
+        }
+
+        axios.post(endpoint, 
+            { status: status }, 
             {
-                status:"Completed"
-            },
-             {
-            headers: {
-                Authorization: `Bearer ${token}`
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
             }
-        }).then(res => {
+        ).then(res => {
             if (res.status === 200) {
                 setVehiclesList(res.data);
                 setLoading(false);
             }
         }).catch(err => {
-            console.log(err)
+            console.log(err);
             setLoading(false);
-            toast.error("Failed to load completed vehicles", {
+            toast.error(`Failed to load ${status.toLowerCase()} vehicles`, {
                 position: "top-right",
                 autoClose: 5000,
                 hideProgressBar: false,
@@ -58,87 +98,58 @@ function CompletedVehiclesDashboard() {
                 transition: Bounce,
             });
         });
-    }
-    else if(userRole==="admin"){
-        axios.post("http://localhost:3000/api/admin/rentalList",
-            {
-                status:"Completed"
-            },
-             {
-            headers: {
-                Authorization: `Bearer ${token}`
-            }
-        }).then(res => {
-            if (res.status === 200) {
-                setVehiclesList(res.data);
-                setLoading(false);
-            }
-        }).catch(err => {
-            console.log(err)
-            setLoading(false);
-            toast.error("Failed to load completed vehicles", {
-                position: "top-right",
-                autoClose: 5000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "colored",
-                transition: Bounce,
-            });
-        });
-    }
-    else if(userRole === "customer"){
-        axios.post("http://localhost:3000/api/customer/rental",
-            {
-                status:"Completed"
-            },
-             {
-            headers: {
-                Authorization: `Bearer ${token}`
-            }
-        }).then(res => {
-            if (res.status === 200) {
-                setVehiclesList(res.data);
-                setLoading(false);
-            }
-        }).catch(err => {
-            console.log(err)
-            setLoading(false);
-            toast.error("Failed to load completed vehicles", {
-                position: "top-right",
-                autoClose: 5000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "colored",
-                transition: Bounce,
-            });
-        });
-    }
     };
 
     const handleViewDetails = (vehicleId) => {
-        // Remove the console.log and directly navigate
-        navigate(`/singleRental/${vehicleId}`, { state: { id: vehicleId } });
+        // This will be handled by your routing logic later
+        console.log("Navigate to vehicle details page for:", vehicleId);
+        navigate(`/MyBookings/${vehicleId}`)
+        // For example: history.push(`/vehicle-details/${vehicleId}`);
     };
 
-
+    const handleStatusChange = (status) => {
+        setCurrentStatus(status);
+    };
+    
 
     return (
-        <div className="dashboard p-6 bg-gray-50 font-sans">
-            {/* Cancelled Vehicles List Section */}
+        <div className="dashboard p-6 bg-gray-50 font-sans container">
+            {/* Status Navigation */}
+            <div className="bg-white rounded-xl shadow-lg overflow-hidden mb-6">
+                <div className="flex flex-wrap">
+                    {["Pending", "Approved", "In Trip", "Completed", "Rejected", "Cancelled"].map((status) => (
+                        <button
+                            key={status}
+                            onClick={() => handleStatusChange(status)}
+                            className={`flex-1 py-4 px-4 text-center font-medium transition-colors ${
+                                currentStatus === status 
+                                ? "bg-blue-400 text-white" 
+                                : "hover:bg-blue-100 text-gray-700"
+                            }`}
+                        >
+                            <div className="flex items-center justify-center">
+                                {status === "Pending" && <Clock size={18} className="mr-2" />}
+                                {status === "Approved" && <CheckCircle size={18} className="mr-2" />}
+                                {status === "In Trip" && <Truck size={18} className="mr-2" />}
+                                {status === "Completed" && <CheckCircle size={18} className="mr-2" />}
+                                {status === "Rejected" && <XCircle size={18} className="mr-2" />}
+                                {status === "Cancelled" && <AlertCircle size={18} className="mr-2" />}
+                                {status}
+                            </div>
+                        </button>
+                    ))}
+                </div>
+            </div>
+
+            {/* Vehicles List Section */}
             <div className="bg-white rounded-xl shadow-lg overflow-hidden">
                 <div className="p-6 border-b bg-gradient-to-r from-blue-50 to-blue-100 flex justify-between items-center">
-                    <h2 className="text-xl font-bold text-gray-800">Completed Vehicles</h2>
-                    <span className="text-sm text-gray-600 font-medium">Total Completed: {vehiclesList.length}</span>
+                    <h2 className="text-xl font-bold text-gray-800">{currentStatus} Vehicles</h2>
+                    <span className="text-sm text-gray-600 font-medium">Total: {vehiclesList.length}</span>
                 </div>
                 
                 {loading ? (
-                    <div className="p-8 text-center text-gray-500">Loading completed vehicles...</div>
+                    <div className="p-8 text-center text-gray-500">Loading vehicles...</div>
                 ) : (
                     <div className="overflow-x-auto">
                         <table className="w-full">
@@ -175,25 +186,24 @@ function CompletedVehiclesDashboard() {
                                             </div>
                                         </td>
                                         <td className="p-4 text-gray-700">
-                                            {booking.vehicle.make?.brandName || ''} {booking.vehicle.model}
+                                             {booking.vehicle.model}
                                         </td>
                                         <td className="p-4 text-gray-700">
                                             {booking.pickUpLocation || 'Not specified'}
                                         </td>
                                         <td className="p-4">
-                                            <span className="px-3 py-1 rounded-full text-xs font-medium bg-red-100 text-red-800 flex items-center w-fit">
-                                                <AlertCircle size={14} className="mr-1" />
+                                            <span className={`px-3 py-1 rounded-full text-xs font-medium ${statusColors[booking.status]} flex items-center w-fit`}>
+                                                {statusIcons[booking.status]}
                                                 {booking.status}
                                             </span>
                                         </td>
                                         <td className="p-4 text-right">
-                                           <button 
+                                            <button 
                                                 onClick={() => handleViewDetails(booking._id)}
-                                                className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 flex items-center justify-center ml-auto transition-colors"
+                                                className="bg-blue-400 text-white px-4 py-2 rounded-lg hover:opacity-70 flex items-center justify-center ml-auto transition-colors"
                                             >
                                                 <Eye size={16} className="mr-2" /> View Details
                                             </button>
-                                        
                                         </td>
                                     </tr>
                                 ))}
@@ -201,7 +211,7 @@ function CompletedVehiclesDashboard() {
                                 {vehiclesList.length === 0 && (
                                     <tr>
                                         <td colSpan="5" className="p-8 text-center text-gray-500">
-                                            No completed vehicles found.
+                                            No {currentStatus.toLowerCase()} vehicles found.
                                         </td>
                                     </tr>
                                 )}
@@ -214,4 +224,4 @@ function CompletedVehiclesDashboard() {
     );
 }
 
-export default CompletedVehiclesDashboard;
+export default VehicleDashboard;

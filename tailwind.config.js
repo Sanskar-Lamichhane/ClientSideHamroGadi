@@ -11,6 +11,7 @@ export default {
         'primary-light':'#EEEFFB',
         'secondary':'#FB2E86',
         'customBlue': '#D9E8FE',
+        'navColor':'#f9e9de'
       },
       screens:{
         'gm':'200px',
@@ -21,7 +22,8 @@ export default {
         '2xl':'1400px',
       },
       backgroundImage:{
-        'banner-2':"url('./src/assets/images/banner2.png')"
+        'banner-2':"url('./src/assets/images/banner2.png')",
+        'backgroundVehicle':"url('./src/assets/images/jeep.jpg')"
       }
       
     },

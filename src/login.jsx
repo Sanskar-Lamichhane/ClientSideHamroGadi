@@ -125,7 +125,7 @@ export default function Login() {
                   type="password"
                   placeholder="********"
                   name="password"
-                  className="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
                   required
                 />
               </div>
@@ -136,7 +136,7 @@ export default function Login() {
                   <input
                     type="checkbox"
                     id="remember"
-                    className="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                    className="h-4 w-4 text-blue-400 border-gray-300 rounded focus:ring-blue-400"
                     required
                   />
                   <label htmlFor="remember" className="ml-2 text-gray-700">
@@ -144,7 +144,7 @@ export default function Login() {
                   </label>
                 </div>
 
-                <Link to="/forgot-password" className="text-blue-600 hover:underline">
+                <Link to="/forgot-password" className="text-blue-400 hover:underline">
                   Forgot Password?
                 </Link>
               </div>
@@ -152,7 +152,7 @@ export default function Login() {
               {/* Submit Button */}
               <button
                 type="submit"
-                className="w-full p-4 bg-blue-600 text-white text-lg font-bold rounded-lg hover:bg-blue-700 transition duration-300 mt-6"
+                className="w-full p-4 bg-blue-400 text-white text-lg font-bold rounded-lg hover:opacity-65 transition duration-300 mt-6"
               >
                 Login
               </button>
@@ -161,7 +161,7 @@ export default function Login() {
             {/* Sign Up Link */}
             <div className="mt-6 text-center">
               <span className="text-gray-700">Don't have an account? </span>
-              <Link to="/signup" className="text-blue-600 font-medium hover:underline">
+              <Link to="/signup" className="text-blue-400 font-medium hover:underline">
                 Sign Up
               </Link>
             </div>

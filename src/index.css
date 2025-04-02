@@ -30,6 +30,8 @@ body{
 }
 
 
+
+
 @media(min-width:450px){
     .container{
         max-width:440px;

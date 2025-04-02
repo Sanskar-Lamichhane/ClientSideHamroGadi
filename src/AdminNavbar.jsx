@@ -61,7 +61,11 @@ function AdminNavbar() {
   const getPageName = () => {
     const path = location.pathname;
     const pageName = path.split('/').pop();
+    if (path.startsWith("/singleRental/")){
+      return "Single Rental Details"
+    }
     return pageName.charAt(0).toUpperCase() + pageName.slice(1);
+    
   };
 
   const toggleProfileMenu = () => {

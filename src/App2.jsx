@@ -20,7 +20,8 @@ import RejectedVehiclesDashboard from './RejectedVehicleList';
 import ApprovedVehiclesDashboard from './ApprovedVehicle';
 import IntripVehiclesDashboard from './IntripVehicleList';
 import PendingVehiclesDashboard from './PendingVehicleList';
-// import VendorsPage from "./VendorsPage";
+import VendorDashboard from './VendorsPage';
+import RentalDetailsPage from './singleRentalPage';
 
 function App2() {
     return (
@@ -47,6 +48,8 @@ function App2() {
                         <Route path="/rejectedVehicleList" element={<RejectedVehiclesDashboard/>}/>
                         <Route path="/approvedVehicleList" element={<ApprovedVehiclesDashboard/>}/>
                         <Route path="intripVehicleList" element={<IntripVehiclesDashboard/>}/>
+                        <Route path="/vendors" element={<VendorDashboard/>}/>
+                        <Route path="/singleRental/:id" element={<RentalDetailsPage/>}/>
                     </Routes>
                 </div>
             </div>

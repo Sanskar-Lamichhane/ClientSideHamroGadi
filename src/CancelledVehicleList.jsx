@@ -2,10 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { Car, Eye, AlertCircle } from 'lucide-react';
 import axios from 'axios';
 import { toast, Bounce } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 
 function CancelledVehiclesDashboard() {
     const [vehiclesList, setVehiclesList] = useState([]);
     const [loading, setLoading] = useState(true);
+    const navigate=useNavigate();
 
     const getUserRole = () => {
         const expiry = localStorage.getItem("expiry_date");
@@ -45,7 +47,7 @@ function CancelledVehiclesDashboard() {
             setLoading(false);
             toast.error("Failed to load cancelled vehicles", {
                 position: "top-right",
-                autoClose: 5000,
+                autoClose: 1000,
                 hideProgressBar: false,
                 closeOnClick: true,
                 pauseOnHover: true,
@@ -121,6 +123,7 @@ function CancelledVehiclesDashboard() {
     const handleViewDetails = (vehicleId) => {
         // This will be handled by your routing logic later
         console.log("Navigate to vehicle details page for:", vehicleId);
+        navigate(`/singleRental/${vehicleId}`, { state: { id: vehicleId } });
         // For example: history.push(`/vehicle-details/${vehicleId}`);
     };
 

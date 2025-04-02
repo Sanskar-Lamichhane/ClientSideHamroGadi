@@ -148,10 +148,14 @@ import React, { useState, useEffect } from 'react';
 import { Car, Eye, AlertCircle, Truck, CheckCircle, Users } from 'lucide-react';
 import axios from 'axios';
 import { toast, Bounce } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 
 function Dashboard() {
     const [vehiclesList, setVehiclesList] = useState([]);
     const [loading, setLoading] = useState(true);
+    const navigate=useNavigate()
+    const pathname=useLocation();
 
     const getUserRole = () => {
         const expiry = localStorage.getItem("expiry_date");
@@ -167,7 +171,7 @@ function Dashboard() {
 
     useEffect(() => {
         fetchPendingVehicles();
-    }, []);
+    },[]);
 
     const fetchPendingVehicles = () => {
         const token = localStorage.getItem("access_token");
@@ -218,10 +222,10 @@ function Dashboard() {
             }
         }).catch(err => {
             console.log(err)
-            setLoading(false);
-            toast.error("Failed to load pending vehicles", {
+           setLoading(false);
+            toast.error("Failed to load hello vehicles", {
                 position: "top-right",
-                autoClose: 5000,
+                autoClose: 2000,
                 hideProgressBar: false,
                 closeOnClick: true,
                 pauseOnHover: true,
@@ -251,7 +255,7 @@ function Dashboard() {
             setLoading(false);
             toast.error("Failed to load pending vehicles", {
                 position: "top-right",
-                autoClose: 5000,
+                autoClose: 2000,
                 hideProgressBar: false,
                 closeOnClick: true,
                 pauseOnHover: true,
@@ -265,9 +269,8 @@ function Dashboard() {
     };
 
     const handleViewDetails = (vehicleId) => {
-        // This will be handled by your routing logic later
-        console.log("Navigate to vehicle details page for:", vehicleId);
-        // For example: history.push(`/vehicle-details/${vehicleId}`);
+        // Remove the console.log and directly navigate
+        navigate(`/singleRental/${vehicleId}`, { state: { id: vehicleId } });
     };
 
     return (
