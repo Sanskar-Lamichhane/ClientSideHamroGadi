@@ -113,7 +113,7 @@ function VehicleDashboard() {
     
 
     return (
-        <div className="dashboard p-6 bg-gray-50 font-sans container">
+        <div className="dashboard p-6 bg-gray-50 font-sans mt-20 container">
             {/* Status Navigation */}
             <div className="bg-white rounded-xl shadow-lg overflow-hidden mb-6">
                 <div className="flex flex-wrap">

@@ -954,7 +954,7 @@ const RentalDetailsPage = () => {
   const currentStatus = rentalDetails.status || '';
 
   return (
-    <div className="bg-gray-50 min-h-screen p-4">
+    <div className="bg-gray-50 min-h-screen p-4 mt-20">
       <div className="max-w-5xl mx-auto">
         <header className="flex justify-between items-center mb-6">
           <h1 className="text-2xl font-bold text-gray-800">Rental Details</h1>

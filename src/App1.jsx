@@ -20,6 +20,9 @@ import App2 from "./App2.jsx"
 import MyBookings from "./MyBookings.jsx"
 import VehicleDashboard from "./MyBookings.jsx"
 import RentalDetailsPage from "./singleRentalPage.jsx"
+import ProfileManagement from "./ProfileManagementPage.jsx"
+import VehicleDetailsPage from "./SingleVehiclePage.jsx"
+import Footer from "./Footer.jsx"
 
 
 function App1() {
@@ -58,8 +61,11 @@ function App1() {
             <Route path="/forgot-password" element={<ForgotPassword />} />
             <Route path="/otp-verification" element={<OtpVerification />} />
             <Route path="/PasswordResetVerification" element={<PasswordResetVerification />} />
+            <Route path="/profileManagement" element={<ProfileManagement/>}/>
+            <Route path="/singleVehicle/:id" element={<VehicleDetailsPage/>}/>
             <Route path="/404" element={<NotFound />} />
           </Routes>
+          <Footer/>
         </BrowserRouter>
     </>
   )

@@ -135,7 +135,7 @@ export default function SignUp() {
   };
 
   return (
-    <div className="w-full bg-white container">
+    <div className="w-full bg-white container mt-20">
       <div className="container mx-auto px-4 py-8 flex flex-col lg:flex-row">
         <div className="hidden lg:block lg:w-1/2 p-8">
           <img

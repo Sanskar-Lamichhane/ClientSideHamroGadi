@@ -1,541 +1,565 @@
-// import Skeleton from "react-loading-skeleton";
-// import axios from "axios";
-// import { useState, useEffect } from 'react'
-// import FeaturedProduct from "./FeaturedProduct";
-// import { useLocation } from "react-router-dom";
-// import { useNavigate } from "react-router-dom";
-// import { useParams } from "react-router-dom";
-// import Pagination from 'rc-pagination';
-// import { useSearchParams } from "react-router-dom";
-
-// function Product() {
-
-//     const[paginationData,setPaginationData]=useState({
-//         total:0,
-//         page:1,
-//         per_page: 25
-//     })
-
-//     const [latestProduct, setLatestProduct] = useState([]);
-//     const navigate = useNavigate()
-
-//     const [currentSearchParams,setSearchParams]=useSearchParams();
 
 
-//     const params = useLocation();
-//     console.log(params)
-
-//     const hello=useParams();
-//     console.log(hello)
-
-
-
-
-
-//     useEffect(() => {
-//         axios.get("https://ecommerce-sagartmg2.vercel.app/api/products" + params.search).
-//             then((res) => {
-//                 console.log(res)
-//                 setLatestProduct(res.data.products)
-//                 setPaginationData(res.data.metadata)
-//             })
-//             .catch((error) => {
-//                 console.log(err)
-//             })
-//     }, [params.search])
-
-//     // useEffect(()=>{
-//     //     axios.get("https://ecommerce-sagartmg2.vercel.app/api/products"+useParams.search).
-//     //     then((res)=>{
-//     //       console.log(res)
-//     //       setProducts(res.data.data[0].data)
-//     //     })
-//     //   },[])
-
-//     return (
-//         <>
-//             <section className="h-48 bg-primary-light flex items-center">
-//                 <div className="container">
-//                     <p className="text-4xl font-bold">Product Title</p>
-//                     <p className="text-xl mt-3">Home / Products</p>
-//                 </div>
-//             </section>
-
-//             <section className=" container mt-16">
-//                 <div className="mb-12 flex items-center justify-between">
-//                     <div>
-//                         <p className='text-primary-dark text-3xl font-bold'>Ecommerce Furniture Accesorries and Items</p>
-//                         <Pagination
-//                         total={paginationData.total}
-//                         pageSize={paginationData.per_page}
-//                         prevIcon=" < prev "
-//                         nextIcon=" next > "
-//                         current={paginationData.page}
-//                         onChange={(pageNumber)=>{
-//                             console.log(pageNumber)
-//                             currentSearchParams.set("page", pageNumber)
-//                             setSearchParams(currentSearchParams)
-//                         }}
-//                         showTotal={(total,range)=>
-//                             `${range[0]} - ${range[1]} of ${total} items`
-
-//                         }
-     
-//                         />
-//                     </div>
-
-//                     <div className="flex gap-4">
-//                         <select name="" id="" onChange={(e) => {
-//                             e.preventDefault();
-//                             currentSearchParams.set("per_page", e.target.value)
-//                             setSearchParams(currentSearchParams)
-//                         }}>
-//                             <option value="25">25</option>
-//                             <option value="50">50</option>
-//                             <option value="100">100</option>
-//                         </select>
-
-
-//                         <select name="" id="" onChange={(e) => {
-//                             e.preventDefault();
-//                             currentSearchParams.set("sort", e.target.value)
-//                             setSearchParams(currentSearchParams)
-                           
-//                         }}>
-//                             <option value="datedesc">latest</option>
-//                             <option value="pricedesc">price desc</option>
-//                         </select>
-
-                        
-//                     </div>
-//                 </div>
-
-//                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-3 lg:grid-cols-4">
-//                     <div className="border border-gray-300">
-//                         filters...
-//                     </div>
-//                     <div className='border border-gray-300 sm:col-span-2 lg:col-span-3 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3  gap-4'>
-
-//                         {
-//                             Array.isArray(latestProduct)
-//                                 ?
-
-//                                 (
-//                                     latestProduct.length === 0 ?
-//                                         <>
-//                                             <Skeleton height={200} />
-//                                             <Skeleton height={200} />
-//                                             <Skeleton height={200} />
-//                                             <Skeleton height={200} />
-//                                             <Skeleton height={200} />
-//                                             <Skeleton height={200} />
-//                                         </>
-//                                         : latestProduct.map((element, index) => {
-//                                             return (
-
-//                                                 <FeaturedProduct key={index} type="latest" image={element.image}
-//                                                     name={element.name} price={element.price} id={element._id} />
-//                                             )
-//                                         })) : (<p className="text-center text-gray-500 text-xl">No Products Available</p>)
-//                         }
-
-
-//                     </div>
-//                 </div>
-//             </section>
-//         </>
-//     )
-// }
-
-// export default Product;
-
-
-import React, { useState } from 'react';
-import { FiMapPin, FiCalendar, FiClock, FiUsers } from 'react-icons/fi';
+import React, { useState, useEffect } from 'react';
+import { FiMapPin, FiCalendar, FiClock, FiUsers, FiSearch } from 'react-icons/fi';
 import { RiSteeringLine, RiGasStationLine } from 'react-icons/ri';
 import { IoCarSportOutline } from 'react-icons/io5';
+import axios from 'axios';
+import Pagination from 'rc-pagination';
+import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
+import Skeleton from 'react-loading-skeleton';
+import { Link } from 'react-router-dom';
 
 const Product = () => {
-  const [sortOrder, setSortOrder] = useState('high-to-low');
+  const [vehicles, setVehicles] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [showSortDropdown, setShowSortDropdown] = useState(false);
+  const [searchInput, setSearchInput] = useState('');
   
-  // Time slots for pickup and drop-off
-  const timeSlots = [
-    '1:00', '1:30', '2:00', '2:30', '3:00', '3:30', 
-    '4:00', '4:30', '5:00', '5:30', '6:00', '6:30',
-    '7:00', '7:30', '8:00', '8:30', '9:00', '9:30',
-    '10:00', '10:30', '11:00', '11:30', '12:00', '12:30'
-  ];
+  const [searchParams, setSearchParams] = useSearchParams();
+  const location = useLocation();
+  const navigate = useNavigate();
   
-  // Sample vehicle data - simplified
-  const vehicles = [
-    {
-      id: 1,
-      name: 'Hyundai Creta',
-      brand: 'Hyundai',
-      price: 8000,
-      priceUnit: 'Nrs',
-      period: 'day',
-      image: '/api/placeholder/400/250',
-      seats: 5,
-      transmission: 'Automatic',
-      fuelType: 'Petrol',
-      type: 'SUV',
-    },
-    {
-      id: 2,
-      name: 'Tata Nexon Ev',
-      brand: 'Tata',
-      price: 8500,
-      priceUnit: 'Nrs',
-      period: 'day',
-      image: '/api/placeholder/400/250',
-      seats: 5,
-      transmission: 'Automatic',
-      fuelType: 'Electric',
-      type: 'SUV',
-    },
-    {
-      id: 3,
-      name: 'Suzuki Swift',
-      brand: 'Suzuki',
-      price: 6000,
-      priceUnit: 'Nrs',
-      period: 'day',
-      image: '/api/placeholder/400/250',
-      seats: 5,
-      transmission: 'Manual',
-      fuelType: 'Petrol',
-      type: 'Hatchback',
-    },
-    {
-      id: 4,
-      name: 'Honda City',
-      brand: 'Honda',
-      price: 7500,
-      priceUnit: 'Nrs',
-      period: 'day',
-      image: '/api/placeholder/400/250',
-      seats: 5,
-      transmission: 'Automatic',
-      fuelType: 'Petrol',
-      type: 'Sedan',
-    },
-    {
-      id: 5,
-      name: 'Toyota Fortuner',
-      brand: 'Toyota',
-      price: 12000,
-      priceUnit: 'Nrs',
-      period: 'day',
-      image: '/api/placeholder/400/250',
-      seats: 7,
-      transmission: 'Automatic',
-      fuelType: 'Diesel',
-      type: 'SUV',
-    },
-    {
-      id: 6,
-      name: 'Mahindra Thar',
-      brand: 'Mahindra',
-      price: 9500,
-      priceUnit: 'Nrs',
-      period: 'day',
-      image: '/api/placeholder/400/250',
-      seats: 4,
-      transmission: 'Manual',
-      fuelType: 'Diesel',
-      type: 'Off-road',
-    }
-  ];
+  // Extract search term from URL params on initial load
+  useEffect(() => {
+    setSearchInput(searchParams.get('search_term') || '');
+  }, [searchParams]);
 
-  // Filter state
-  const [filters, setFilters] = useState({
-    brands: {
-      Hyundai: false,
-      Tata: false,
-      Suzuki: false,
-      Honda: false,
-      Toyota: false,
-      Mahindra: false
-    },
-    fuelTypes: {
-      Petrol: false,
-      Diesel: false,
-      Electric: false,
-      Hybrid: false
-    },
-    transmission: {
-      Automatic: false,
-      Manual: false
-    },
-    categories: {
-      SUV: false,
-      Sedan: false,
-      Hatchback: false,
-      'Off-road': false
-    }
+  // Pagination state
+  const [metadata, setMetadata] = useState({
+    total: 0,
+    page: parseInt(searchParams.get('page') || '1'),
+    per_page: parseInt(searchParams.get('per_page') || '25')
   });
+  
+  // Filter data
+  // const brands = ["Honda", "Hyundai", "Toyota", "Suzuki", "Mahindra"];
+  const cities = ["Chitwan", "Kathmandu", "Butwal", "Lalitpur", "Hetauda", "Bhaktapur", "Birgunj", "Biratnagar", "Dhangadi", "Surkhet"];
+  const fuelTypes = ["Petrol", "Diesel", "Electric", "Hybrid"];
+  const transmissions = ["Automatic", "Manual"];
 
-  const toggleFilter = (category, item) => {
-    setFilters({
-      ...filters,
-      [category]: {
-        ...filters[category],
-        [item]: !filters[category][item]
+  const [category,setCategory]=useState([])
+  const [brands,setBrands]=useState([])
+  
+  // Get sort params from query params
+  const sortField = searchParams.get('sortField') || 'price_per_day';
+  const sortBy = searchParams.get('sortBy') || 'desc';
+  
+  // Fetch vehicles
+  const fetchVehicles = async () => {
+    setLoading(true);
+    try {
+      // Build the query string from all search params
+      const response = await axios.get(`http://localhost:3000/api/vehicles${location.search}`);
+      
+      // Check if response data is in expected format
+      if (response.data && Array.isArray(response.data) && response.data.length > 0) {
+        setVehicles(response.data[0].data || []);
+        setMetadata(response.data[0].meta_data || {
+          total: 0,
+          page: 1,
+          per_page: 25
+        });
+      }  else {
+        // Empty or invalid response
+        setVehicles([]);
+        setMetadata({
+          total: 0,
+          page: 1,
+          per_page: 25
+        });
       }
-    });
+    } catch (error) {
+      console.error("Error fetching vehicles:", error);
+      setVehicles([]);
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const toggleSortDropdown = () => {
-    setShowSortDropdown(!showSortDropdown);
+   useEffect(()=>{
+          axios.get("http://localhost:3000/api/vehicleType")
+          .then(res=>{
+            if(res.status && res.status===200){
+              console.log(res.data.Types)
+              setCategory(res.data.Types)
+
+          }
+          })
+          .catch(err=>{
+              
+          })
+      },[])
+
+      useEffect(()=>{
+        axios.get("http://localhost:3000/api/brand")
+        .then(res=>{
+          if(res.status && res.status===200){
+            setBrands(res.data.Brands)
+          }
+        })
+        .catch(err=>{
+
+        })
+      },[])
+  
+  
+  // Initial fetch and when search params change
+  useEffect(() => {
+    fetchVehicles();
+  }, [location.search]);
+  
+  // Handle search form submission
+  const handleSearch = (e) => {
+    e.preventDefault();
+    searchParams.set('search_term', searchInput);
+    searchParams.set('page', '1'); // Reset to first page on new search
+    setSearchParams(searchParams);
+  };
+  
+  // Handle page change
+  const handlePageChange = (newPage) => {
+    searchParams.set('page', newPage);
+    setSearchParams(searchParams);
+    window.scrollTo(0, 0); // Scroll to top when changing page
+  };
+  
+  // Handle single-select filter
+  const handleSingleSelect = (paramName, value) => {
+    if (searchParams.get(paramName) === value) {
+      // If same value is clicked again, remove it
+      searchParams.delete(paramName);
+    } else {
+      // Set the new value
+      searchParams.set(paramName, value);
+    }
+    
+    // Reset to first page when changing filter
+    searchParams.set('page', '1');
+    setSearchParams(searchParams);
+  };
+  
+ // FIXED FUNCTION: This was causing the issue
+ const isFilterActive = (paramName, value) => {
+  // For all single-select parameters
+  const paramMappings = {
+    'types': 'cat',
+    'brands': 'make',
+    'fuelTypes': 'fuel_type',
+    'transmission': 'transmission',
+    'cities': 'city'
+  };
+  
+  const paramValue = searchParams.get(paramMappings[paramName]);
+  
+  // Compare case-insensitive to handle potential inconsistencies
+  return paramValue && paramValue.toLowerCase() === value.toLowerCase();
+};
+  
+  // Reset all filters
+  const resetFilters = () => {
+    // Clear all search params
+    searchParams.delete('search_term');
+    searchParams.delete('cat');
+    searchParams.delete('make');
+    searchParams.delete('fuel_type');
+    searchParams.delete('transmission');
+    searchParams.delete('city');
+    searchParams.delete('sortField');
+    searchParams.delete('sortBy');
+    
+    // Keep only page and per_page
+    searchParams.set('page', '1');
+    searchParams.set('per_page', '25');
+    
+    // Update search params and reset search input
+    setSearchParams(searchParams);
+    setSearchInput('');
   };
 
-  const handleSortChange = (order) => {
-    setSortOrder(order);
-    setShowSortDropdown(false);
+  // Custom pagination item renderer
+  const itemRender = (current, type, element) => {
+    if (type === 'page') {
+      return (
+        <button
+          className={`w-10 h-10 flex items-center justify-center rounded-md mx-1 transition-colors ${
+            current === metadata.page
+              ? 'bg-blue-500 text-white font-medium'
+              : 'bg-white border border-gray-300 text-gray-700 hover:bg-gray-50'
+          }`}
+        >
+          {current}
+        </button>
+      );
+    }
+    if (type === 'prev') {
+      return (
+        <button className="flex items-center justify-center px-3 h-10 rounded-md mx-1 bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 transition-colors">
+          <svg className="w-5 h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7"></path>
+          </svg>
+          Prev
+        </button>
+      );
+    }
+    if (type === 'next') {
+      return (
+        <button className="flex items-center justify-center px-3 h-10 rounded-md mx-1 bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 transition-colors">
+          Next
+          <svg className="w-5 h-5 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7"></path>
+          </svg>
+        </button>
+      );
+    }
+    if (type === 'jump-prev' || type === 'jump-next') {
+      return (
+        <button className="w-10 h-10 flex items-center justify-center rounded-md mx-1 bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 transition-colors">
+          ...
+        </button>
+      );
+    }
+    return element;
   };
+
+  // Check if pagination should be shown
+  const shouldShowPagination = metadata.total > metadata.per_page;
 
   return (
-    <div className="bg-gray-50 min-h-screen">
+    <div className="bg-gray-50 min-h-screen mt-20">
+      {/* Hero Banner */}
+      <div className="relative h-48 bg-gray-900 overflow-hidden">
+        <div className="absolute inset-0 bg-cover bg-center opacity-60" style={{ backgroundImage: "url('/api/placeholder/1200/400')" }}></div>
+        <div className="max-w-7xl mx-auto px-4 relative z-10 h-full flex flex-col justify-center text-center">
+          <h1 className="text-4xl font-bold text-white mb-2">VEHICLES</h1>
+          <p className="text-xl text-white">Freedom to Explore – Rent Your Journey, Drive Your Adventure</p>
+        </div>
+      </div>
+
       <div className="max-w-7xl mx-auto px-4 py-8">
-        {/* Hero Section */}
-        <div className="text-center mb-12">
-          <h1 className="text-3xl font-bold mb-2 text-gray-900">Find Your Perfect Vehicle</h1>
-          <p className="text-gray-600 max-w-2xl mx-auto">Choose from our wide selection of quality vehicles for your next adventure</p>
-        </div>
-        
-        {/* Search and date-time filters */}
-        <div className="bg-white p-6 rounded-2xl shadow-lg mb-12">
-          <div className="grid grid-cols-1 lg:grid-cols-11 gap-4">
-            <div className="lg:col-span-3">
-              <div className="flex items-center border rounded-xl p-3 bg-white shadow-sm">
-                <FiMapPin className="text-blue-500 mr-2" />
-                <select className="w-full bg-transparent outline-none appearance-none text-gray-700">
-                  <option>Select Location</option>
-                  <option>Kathmandu</option>
-                  <option>Pokhara</option>
-                  <option>Chitwan</option>
-                </select>
-              </div>
-            </div>
-            
-            {/* Pickup date and time on the same row */}
-            <div className="lg:col-span-4">
-              <div className="flex">
-                <div className="flex-1 flex items-center border rounded-l-xl p-3 bg-white shadow-sm">
-                  <FiCalendar className="text-blue-500 mr-2" />
+        <div className="flex flex-col lg:flex-row gap-6">
+          {/* Sidebar filters */}
+          <div className="lg:w-1/4">
+            <div className="bg-white p-5 rounded-lg shadow-md sticky top-4 border border-gray-200">
+              {/* Search */}
+              <form onSubmit={handleSearch}>
+                <div className="relative mb-6">
                   <input 
-                    type="date" 
-                    placeholder="Pick-up Date"
-                    className="w-full bg-transparent outline-none text-gray-700"
+                    type="text" 
+                    placeholder="Search here......" 
+                    className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500"
+                    value={searchInput}
+                    onChange={(e) => setSearchInput(e.target.value)}
                   />
+                  <FiSearch className="absolute top-3 left-3 text-gray-400" />
+                  <button type="submit" className="absolute right-2 top-2 bg-teal-500 text-white p-1 rounded-md hover:bg-teal-600">
+                    <FiSearch size={16} />
+                  </button>
                 </div>
-                <div className="flex-1 flex items-center border-y border-r rounded-r-xl p-3 bg-white shadow-sm">
-                  <FiClock className="text-blue-500 mr-2" />
-                  <select className="w-full bg-transparent outline-none appearance-none text-gray-700">
-                    <option value="">Pick-up Time</option>
-                    {timeSlots.map((time, index) => (
-                      <option key={`pickup-${index}`} value={time}>{time}</option>
-                    ))}
-                  </select>
-                </div>
-              </div>
-            </div>
-            
-            {/* Return date and time on the same row */}
-            <div className="lg:col-span-4">
-              <div className="flex">
-                <div className="flex-1 flex items-center border rounded-l-xl p-3 bg-white shadow-sm">
-                  <FiCalendar className="text-blue-500 mr-2" />
-                  <input 
-                    type="date" 
-                    placeholder="Return Date"
-                    className="w-full bg-transparent outline-none text-gray-700"
-                  />
-                </div>
-                <div className="flex-1 flex items-center border-y border-r rounded-r-xl p-3 bg-white shadow-sm">
-                  <FiClock className="text-blue-500 mr-2" />
-                  <select className="w-full bg-transparent outline-none appearance-none text-gray-700">
-                    <option value="">Return Time</option>
-                    {timeSlots.map((time, index) => (
-                      <option key={`return-${index}`} value={time}>{time}</option>
-                    ))}
-                  </select>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        
-        <div className="flex flex-col lg:flex-row gap-8">
-          {/* Sidebar filters - IMPROVED STYLING */}
-          <div className="lg:w-1/5">
-            <div className="bg-white p-3 rounded-2xl shadow-md sticky top-4">
-              <div className="flex justify-between items-center mb-5">
-                <h3 className="text-lg font-bold text-gray-900">Filters</h3>
-                <button className="text-blue-600 text-sm font-medium hover:text-blue-800 transition">Reset</button>
+              </form>
+              
+              <div className="border-b border-gray-200 pb-5 mb-5">
+                <h3 className="text-lg font-semibold text-gray-800 mb-4">Types</h3>
+                
+                {/* Type filters (single-select) */}
+                {category.map((category) => (
+                  <div key={`type-${category.categoryName}`} className="flex items-center mb-2">
+                    <input
+                      type="checkbox"
+                      id={`type-${category.categoryName}`}
+                      checked={isFilterActive('types', category.categoryName)}
+                      onChange={() => handleSingleSelect('cat', category.categoryName)}
+                      className="w-4 h-4 text-teal-600 border-gray-300 rounded focus:ring-teal-500"
+                    />
+                    <label htmlFor={`type-${category.categoryName}`} className="ml-2 text-gray-700">
+                      {category.categoryName.charAt(0).toUpperCase() + category.categoryName.slice(1)}
+                    </label>
+                  </div>
+                ))}
+
+                {/* City filters (multi-select) */}
+                <h3 className="text-lg font-semibold text-gray-800 mt-6 mb-4">Cities</h3>
+                {cities.map((city) => (
+                  <div key={`city-${city}`} className="flex items-center mb-2">
+                    <input
+                      type="checkbox"
+                      id={`city-${city}`}
+                      checked={isFilterActive('cities', city)}
+                      onChange={() => handleSingleSelect('city', city)}
+                      className="w-4 h-4 text-teal-600 border-gray-300 rounded focus:ring-teal-500"
+                    />
+                    <label htmlFor={`city-${city}`} className="ml-2 text-gray-700">
+                      {city.charAt(0).toUpperCase() + city.slice(1)}
+                    </label>
+                  </div>
+                ))}
               </div>
               
-              {/* Brand filters - improved spacing */}
-              <div className="mb-5">
-                <h4 className="text-base font-semibold mb-3 text-gray-800">Brand</h4>
-                <div className="space-y-2">
-                  {Object.keys(filters.brands).map(brand => (
-                    <div key={brand} className="flex items-center">
-                      <input
-                        type="checkbox"
-                        id={`brand-${brand}`}
-                        checked={filters.brands[brand]}
-                        onChange={() => toggleFilter('brands', brand)}
-                        className="w-4 h-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
-                      />
-                      <label htmlFor={`brand-${brand}`} className="ml-2 text-sm font-medium text-gray-700">{brand}</label>
-                    </div>
-                  ))}
-                </div>
+              {/* Brand filters (single-select) */}
+              <div className="border-b border-gray-200 pb-5 mb-5">
+                <h3 className="text-lg font-semibold text-gray-800 mb-4">Brand</h3>
+                {brands.map((brand) => (
+                  <div key={`brand-${brand.brandName}`} className="flex items-center mb-2">
+                    <input
+                      type="checkbox"
+                      id={`brand-${brand.brandName}`}
+                      checked={isFilterActive('brands', brand.brandName)}
+                      onChange={() => handleSingleSelect('make', brand.brandName)}
+                      className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-teal-500"
+                    />
+                    <label htmlFor={`brand-${brand.brandName}`} className="ml-2 text-gray-700">{brand.brandName}</label>
+                  </div>
+                ))}
               </div>
               
-              {/* Fuel Type filters - improved spacing */}
-              <div className="mb-5">
-                <h4 className="text-base font-semibold mb-3 text-gray-800">Fuel Type</h4>
-                <div className="space-y-2">
-                  {Object.keys(filters.fuelTypes).map(fuelType => (
-                    <div key={fuelType} className="flex items-center">
-                      <input
-                        type="checkbox"
-                        id={`fuel-${fuelType}`}
-                        checked={filters.fuelTypes[fuelType]}
-                        onChange={() => toggleFilter('fuelTypes', fuelType)}
-                        className="w-4 h-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
-                      />
-                      <label htmlFor={`fuel-${fuelType}`} className="ml-2 text-sm font-medium text-gray-700">{fuelType}</label>
-                    </div>
-                  ))}
-                </div>
+              {/* Fuel Type filters (single-select) */}
+              <div className="border-b border-gray-200 pb-5 mb-5">
+                <h3 className="text-lg font-semibold text-gray-800 mb-4">Fuel Type</h3>
+                {fuelTypes.map((fuel) => (
+                  <div key={`fuel-${fuel}`} className="flex items-center mb-2">
+                    <input
+                      type="checkbox"
+                      id={`fuel-${fuel}`}
+                      checked={isFilterActive('fuelTypes', fuel)}
+                      onChange={() => handleSingleSelect('fuel_type', fuel)}
+                      className="w-4 h-4 text-blue-500 border-gray-300 rounded focus:ring-teal-400"
+                    />
+                    <label htmlFor={`fuel-${fuel}`} className="ml-2 text-gray-700">{fuel}</label>
+                  </div>
+                ))}
               </div>
               
-              {/* Transmission filters - improved spacing */}
-              <div className="mb-5">
-                <h4 className="text-base font-semibold mb-3 text-gray-800">Transmission</h4>
-                <div className="space-y-2">
-                  {Object.keys(filters.transmission).map(trans => (
-                    <div key={trans} className="flex items-center">
-                      <input
-                        type="checkbox"
-                        id={`trans-${trans}`}
-                        checked={filters.transmission[trans]}
-                        onChange={() => toggleFilter('transmission', trans)}
-                        className="w-4 h-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
-                      />
-                      <label htmlFor={`trans-${trans}`} className="ml-2 text-sm font-medium text-gray-700">{trans}</label>
-                    </div>
-                  ))}
-                </div>
-              </div>
-              
-              {/* Category filters - improved spacing */}
+              {/* Transmission filters (single-select) */}
               <div>
-                <h4 className="text-base font-semibold mb-3 text-gray-800">Vehicle Type</h4>
-                <div className="space-y-2">
-                  {Object.keys(filters.categories).map(category => (
-                    <div key={category} className="flex items-center">
-                      <input
-                        type="checkbox"
-                        id={`category-${category}`}
-                        checked={filters.categories[category]}
-                        onChange={() => toggleFilter('categories', category)}
-                        className="w-4 h-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
-                      />
-                      <label htmlFor={`category-${category}`} className="ml-2 text-sm font-medium text-gray-700">{category}</label>
-                    </div>
-                  ))}
-                </div>
+                <h3 className="text-lg font-semibold text-gray-800 mb-4">Transmission</h3>
+                {transmissions.map((trans) => (
+                  <div key={`trans-${trans}`} className="flex items-center mb-2">
+                    <input
+                      type="checkbox"
+                      id={`trans-${trans}`}
+                      checked={isFilterActive('transmission', trans)}
+                      onChange={() => handleSingleSelect('transmission', trans)}
+                      className="w-4 h-4 text-blue-500 border-gray-300 rounded focus:ring-blue-600"
+                    />
+                    <label htmlFor={`trans-${trans}`} className="ml-2 text-gray-700">{trans}</label>
+                  </div>
+                ))}
               </div>
+              
+              <button 
+                onClick={resetFilters}
+                className="w-full mt-6 py-2 bg-blue-500 text-white rounded hover:bg-blue-700 transition"
+              >
+                Reset Filters
+              </button>
             </div>
           </div>
           
-          {/* Vehicle grid */}
-          <div className="lg:w-4/5">
-            {/* Sort options */}
-            <div className="flex justify-between items-center mb-6">
-              <p className="text-gray-700 font-medium"><span className="text-blue-600">{vehicles.length}</span> vehicles found</p>
-              <div className="relative">
-                <button 
-                  className="flex items-center gap-2 bg-white border border-gray-200 rounded-xl px-4 py-2 shadow-sm hover:shadow transition"
-                  onClick={toggleSortDropdown}
-                >
-                  <span className="text-gray-600 text-sm">Sort By: </span>
-                  <span className="font-medium text-gray-800 text-sm">{sortOrder === 'high-to-low' ? 'Price: High to Low' : 'Price: Low to High'}</span>
-                  <svg className="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path>
-                  </svg>
-                </button>
+          {/* Vehicle list */}
+          <div className="lg:w-3/4">
+            {/* Sort options and per page selector */}
+            <div className="flex flex-col md:flex-row md:justify-between md:items-center bg-white p-4 rounded-lg shadow-sm mb-6">
+              <div className="flex items-center mb-4 md:mb-0">
+                <p className="text-gray-700 mr-4">
+                  <span className="text-teal-600 font-medium">{metadata.total}</span> vehicles found
+                </p>
+              </div>
+              
+              <div className="flex flex-wrap items-center gap-4">
+                <div className="flex items-center">
+                  <span className="text-sm text-gray-600 mr-2">Items per page:</span>
+                  <select 
+                    value={metadata.per_page} 
+                    className="border border-gray-300 rounded px-2 py-1"
+                    onChange={(e) => {
+                      searchParams.set('per_page', e.target.value);
+                      searchParams.set('page', '1');
+                      setSearchParams(searchParams);
+                    }}
+                  >
+                    <option value="6">6</option>
+                    <option value="8">8</option>
+                    <option value="10">10</option>
+                  </select>
+                </div>
                 
-                {showSortDropdown && (
-                  <div className="absolute right-0 mt-1 w-full bg-white border border-gray-200 rounded-xl shadow-lg z-10">
-                    <button 
-                      className="block w-full text-left px-4 py-2 hover:bg-gray-50 text-sm rounded-t-xl"
-                      onClick={() => handleSortChange('high-to-low')}
-                    >
-                      Price: High to Low
-                    </button>
-                    <button 
-                      className="block w-full text-left px-4 py-2 hover:bg-gray-50 text-sm rounded-b-xl"
-                      onClick={() => handleSortChange('low-to-high')}
-                    >
-                      Price: Low to High
-                    </button>
-                  </div>
-                )}
+                <div className="relative">
+                  <button 
+                    className="flex items-center gap-2 bg-gray-100 rounded-md px-3 py-1 hover:bg-gray-200 transition"
+                    onClick={() => setShowSortDropdown(!showSortDropdown)}
+                  >
+                    <span className="text-gray-600 text-sm">Sort By: </span>
+                    <span className="font-medium text-gray-800 text-sm">
+                      {sortBy === 'desc' ? 'Price: High to Low' : 'Price: Low to High'}
+                    </span>
+                    <svg className="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path>
+                    </svg>
+                  </button>
+                  
+                  {showSortDropdown && (
+                    <div className="absolute right-0 mt-1 w-48 bg-white border border-gray-200 rounded shadow-lg z-10">
+                      <button 
+                        className="block w-full text-left px-4 py-2 hover:bg-gray-50 text-sm"
+                        onClick={() => {
+                          searchParams.set('sortField', 'price_per_day');
+                          searchParams.set('sortBy', 'desc');
+                          setSearchParams(searchParams);
+                          setShowSortDropdown(false);
+                        }}
+                      >
+                        Price: High to Low
+                      </button>
+                      <button 
+                        className="block w-full text-left px-4 py-2 hover:bg-gray-50 text-sm"
+                        onClick={() => {
+                          searchParams.set('sortField', 'price_per_day');
+                          searchParams.set('sortBy', 'asc');
+                          setSearchParams(searchParams);
+                          setShowSortDropdown(false);
+                        }}
+                      >
+                        Price: Low to High
+                      </button>
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
             
-            {/* Vehicle cards grid - WIDER CARDS */}
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {vehicles.map(vehicle => (
-                <div key={vehicle.id} className="bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 flex flex-col">
-                  <div className="h-56 bg-gray-100 relative overflow-hidden">
-                    <img
-                      src={vehicle.image}
-                      alt={vehicle.name}
-                      className="w-full h-full object-cover"
-                    />
-                    <div className="absolute top-4 left-4 bg-blue-600 bg-opacity-90 text-white px-3 py-1 rounded-full text-xs font-medium">
-                      {vehicle.brand}
+            {/* Loading state */}
+            {loading && (
+              <div className="space-y-6">
+                {[1, 2, 3].map((item) => (
+                  <div key={item} className="bg-white rounded-lg overflow-hidden shadow-md border border-gray-200">
+                    <div className="md:flex">
+                      <div className="md:w-2/5 h-64 md:h-auto">
+                        <Skeleton height={250} />
+                      </div>
+                      <div className="md:w-3/5 p-6">
+                        <Skeleton height={30} width="70%" />
+                        <Skeleton height={20} count={3} className="mt-4" />
+                        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 my-5">
+                          <Skeleton height={20} />
+                          <Skeleton height={20} />
+                          <Skeleton height={20} />
+                          <Skeleton height={20} />
+                        </div>
+                        <Skeleton height={40} width="40%" />
+                      </div>
                     </div>
                   </div>
-                  
-                  <div className="p-5">
-                    <div className="flex justify-between items-center mb-4">
-                      <h3 className="text-lg font-bold text-gray-900">{vehicle.name}</h3>
-                      <div className="text-blue-600 font-bold">
-                        {vehicle.priceUnit} {vehicle.price.toLocaleString()}<span className="text-xs text-gray-500">/{vehicle.period}</span>
+                ))}
+              </div>
+            )}
+            
+            {/* Vehicle cards */}
+            {!loading && vehicles.length > 0 && (
+              <>
+                <div className="space-y-6">
+                  {vehicles.map(vehicle => (
+                    <div key={vehicle._id} className="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-lg transition border border-gray-200">
+                      <div className="md:flex">
+                        <div className="md:w-2/5 h-64 md:h-auto relative">
+                          <img
+                            src={vehicle.images?.length > 0 
+                              ? `https://ecommerce-sagartmg2.vercel.app/api/vehicles/image/${vehicle.images[0]}` 
+                              : "/api/placeholder/400/250"}
+                            alt={`${vehicle.brandDetails?.brandName} ${vehicle.model}`}
+                            className="w-full h-full object-cover"
+                          />
+                          <div className="absolute top-4 left-4 bg-blue-500 text-white px-3 py-1 rounded-md text-sm font-medium">
+                            {vehicle.brandDetails?.brandName || 'Brand'}
+                          </div>
+                        </div>
+                        
+                        <div className="md:w-3/5 p-6">
+                          <div className="flex justify-between items-start mb-3">
+                            <h3 className="text-2xl font-bold text-gray-900">
+                              {vehicle.brandDetails?.brandName} {vehicle.model}
+                            </h3>
+                            <div className="text-blue-600 font-bold text-xl">
+                              {vehicle.currency_type} {vehicle.price_per_day.toLocaleString()}
+                              <span className="text-xs text-gray-500">/day</span>
+                            </div>
+                          </div>
+                          
+                          <p className="text-gray-600 mb-4">{vehicle.description}</p>
+                          
+                          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-5">
+                            <div className="flex items-center text-gray-700">
+                              <FiUsers className="mr-2 text-teal-500" /> 
+                              <span>{vehicle.capacity} Seats</span>
+                            </div>
+                            <div className="flex items-center text-gray-700">
+                              <RiSteeringLine className="mr-2 text-blue-500" /> 
+                              <span>{vehicle.transmission}</span>
+                            </div>
+                            <div className="flex items-center text-gray-700">
+                              <RiGasStationLine className="mr-2 text-blue-500" /> 
+                              <span>{vehicle.fuel_type}</span>
+                            </div>
+                            <div className="flex items-center text-gray-700">
+                              <IoCarSportOutline className="mr-2 text-blue-500" /> 
+                              <span>{vehicle.vehicle_type?.categoryName}</span>
+                            </div>
+                          </div>
+                          
+                         <Link to={`/singleVehicle/${vehicle._id}`} className="w-full md:w-auto px-8 py-3 bg-blue-500 hover:bg-blue-700 text-white font-medium rounded transition">
+                            Rent Now
+                        </Link>
+                        </div>
                       </div>
                     </div>
-                    
-                    <div className="grid grid-cols-2 gap-y-2 gap-x-4 mb-4">
-                      <div className="flex items-center text-gray-600 text-sm">
-                        <FiUsers className="mr-2 text-blue-500" /> {vehicle.seats} Seats
-                      </div>
-                      <div className="flex items-center text-gray-600 text-sm">
-                        <RiSteeringLine className="mr-2 text-blue-500" /> {vehicle.transmission}
-                      </div>
-                      <div className="flex items-center text-gray-600 text-sm">
-                        <RiGasStationLine className="mr-2 text-blue-500" /> {vehicle.fuelType}
-                      </div>
-                      <div className="flex items-center text-gray-600 text-sm">
-                        <IoCarSportOutline className="mr-2 text-blue-500" /> {vehicle.type}
-                      </div>
-                    </div>
-                    
-                    <button className="w-full py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-xl transition duration-300 mt-2">
-                      Rent Now
-                    </button>
-                  </div>
+                  ))}
                 </div>
-              ))}
-            </div>
+                
+                {/* Improved Pagination - Only show when total > per_page */}
+                {shouldShowPagination && (
+                  <div className="mt-8 flex justify-center">
+                    <div className="bg-white px-4 py-3 rounded-lg shadow">
+                      <div className="flex items-center justify-between">
+                        <div className="text-sm text-gray-700">
+                          Showing <span className="font-medium">{(metadata.page - 1) * metadata.per_page + 1}</span> to{" "}
+                          <span className="font-medium">
+                            {Math.min(metadata.page * metadata.per_page, metadata.total)}
+                          </span>{" "}
+                          of <span className="font-medium">{metadata.total}</span> results
+                        </div>
+                        <Pagination
+                          total={metadata.total}
+                          pageSize={metadata.per_page}
+                          current={metadata.page}
+                          onChange={handlePageChange}
+                          className="flex items-center"
+                          itemRender={itemRender}
+                          showLessItems={true}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </>
+            )}
+            
+            {/* Empty state */}
+            {!loading && vehicles.length === 0  && (
+              <div className="text-center py-12 bg-white rounded-lg shadow-sm">
+                <div className="text-gray-400 mb-4">
+                  <svg className="w-16 h-16 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 16v3M19 9v3m0-6V3m-8 18h-4a2 2 0 01-2-2V5a2 2 0 012-2h12a2 2 0 012 2v7M3 8h18M9 22l3-3m0 0l3 3m-3-3v-7"></path>
+                  </svg>
+                </div>
+                <h3 className="text-xl font-bold text-gray-700">No vehicles found</h3>
+                <p className="text-gray-500 mt-2">Try changing your filters or adjusting your search criteria</p>
+                <button 
+                  onClick={resetFilters}
+                  className="mt-4 px-6 py-2 bg-blue-500 text-white rounded hover:bg-blue-700 transition"
+                >
+                  Reset Filters
+                </button>
+              </div>
+            )}
           </div>
         </div>
       </div>

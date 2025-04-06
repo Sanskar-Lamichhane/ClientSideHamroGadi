@@ -1,5 +1,6 @@
 
 
+
 // import React, { useState } from 'react';
 // import { Truck, Eye, Plus, Car, CheckCircle, XCircle, Filter } from 'lucide-react';
 // import { Link } from 'react-router-dom';
@@ -9,6 +10,7 @@
 // import Pagination from 'rc-pagination';
 // import { useSearchParams } from 'react-router-dom';
 // import { useNavigate } from 'react-router-dom';
+// import { toast, Bounce } from 'react-toastify';
 
 
 // function VehiclesPage() {
@@ -40,6 +42,10 @@
 //     const [currentSearchParams, setSearchParams] = useSearchParams();
 //     const [unusedVehicleList, setUnusedVehicles] = useState([]);
 //     const [perPage, setPerPage] = useState(25);
+    
+//     // Add states for delete confirmation
+//     const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+//     const [vehicleToDelete, setVehicleToDelete] = useState(null);
     
 //    const cityList=["Chitwan","Kathmandu","Butwal","Heatuda","Bhaktapur","Birgunj","Biratnagar","Dhangadi","Surkhet"]
     
@@ -127,6 +133,47 @@
 //     // Function to get current city filter
 //     const getCurrentCity = () => {
 //         return currentSearchParams.get("city") || "";
+//     };
+    
+//     // New functions for handling delete confirmation
+//     const handleDeleteClick = (vehicle) => {
+//         setVehicleToDelete(vehicle);
+//         setShowDeleteConfirm(true);
+//     };
+    
+//     const handleConfirmDelete = () => {
+//         const access_token = localStorage.getItem("access_token")
+//         axios.delete(`http://localhost:3000/api/admin/deleteVehicle/${vehicleToDelete._id}`,
+//             {
+//                 headers:{
+//                     Authorization:`Bearer ${access_token}`
+//                 }
+//             }
+//         )
+//         .then(res=>{
+//             if(res.status===200){
+//                 toast.success(`Vehicle ${vehicleToDelete.registration_number} deleted sucessfully`, {
+//                     position: "top-right",
+//                     autoClose: 5000,
+//                     hideProgressBar: false,
+//                     closeOnClick: true,
+//                     pauseOnHover: true,
+//                     draggable: true,
+//                     progress: undefined,
+//                     theme: "colored",
+//                     transition: Bounce,
+//                   });
+//             }
+//         })
+        
+//         setShowDeleteConfirm(false);
+//         setVehicleToDelete(null);
+//         // After delete is successful, you would refresh the vehicle list
+//     };
+    
+//     const handleCancelDelete = () => {
+//         setShowDeleteConfirm(false);
+//         setVehicleToDelete(null);
 //     };
 
 //     return (
@@ -432,7 +479,10 @@
 //                                             <td className="p-4 text-gray-700 truncate">{vehicle.fuel_type}</td>
 //                                             <td className="p-4 text-gray-700 truncate">{vehicle.color}</td>
 //                                             <td className="p-4 text-right">
-//                                                 <button className="bg-red-500 text-white px-3 py-1 rounded-lg hover:bg-red-600 flex items-center justify-center ml-auto transition-colors">
+//                                                 <button 
+//                                                     className="bg-red-500 text-white px-3 py-1 rounded-lg hover:bg-red-600 flex items-center justify-center ml-auto transition-colors"
+//                                                     onClick={() => handleDeleteClick(vehicle)}
+//                                                 >
 //                                                     <XCircle size={14} className="mr-1" /> Delete
 //                                                 </button>
 //                                             </td>
@@ -444,12 +494,37 @@
 //                     </div>
 //                 </div>
 //             )}
+            
+//             {/* Delete Confirmation Modal */}
+//             {showDeleteConfirm && (
+//                 <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+//                     <div className="bg-white rounded-lg shadow-xl p-6 max-w-md w-full mx-4">
+//                         <h3 className="text-lg font-bold text-gray-800 mb-4">Confirm Delete</h3>
+//                         <p className="text-gray-600 mb-6">
+//                             Do you really want to delete vehicle {vehicleToDelete?.registration_number}?
+//                         </p>
+//                         <div className="flex justify-end space-x-3">
+//                             <button 
+//                                 className="px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 transition-colors"
+//                                 onClick={handleCancelDelete}
+//                             >
+//                                 No
+//                             </button>
+//                             <button 
+//                                 className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors"
+//                                 onClick={handleConfirmDelete}
+//                             >
+//                                 Yes
+//                             </button>
+//                         </div>
+//                     </div>
+//                 </div>
+//             )}
 //         </div>
 //     );
 // }
 
 // export default VehiclesPage;
-
 
 import React, { useState } from 'react';
 import { Truck, Eye, Plus, Car, CheckCircle, XCircle, Filter } from 'lucide-react';
@@ -572,6 +647,10 @@ function VehiclesPage() {
         }
     }, [location.pathname, params.search])
     
+
+   
+
+
     const handlePerPageChange = (e) => {
         const newPerPage = parseInt(e.target.value);
         setPerPage(newPerPage);
@@ -625,6 +704,11 @@ function VehiclesPage() {
         setShowDeleteConfirm(false);
         setVehicleToDelete(null);
     };
+
+    // Helper function to determine if pagination should be displayed
+    const shouldShowPagination = () => {
+        return paginationData.total > paginationData.per_page;
+    }
 
     return (
         <div className="vehicles-page p-6 bg-gray-50">
@@ -804,8 +888,8 @@ function VehiclesPage() {
                     )}
                 </div>
                 
-                {/* Pagination for Admin only - Only show when there are vehicles */}
-                {userRole === 'admin' && vehicleList.length > 0 && (
+                {/* Pagination for Admin only - Only show when there are vehicles AND total > per_page */}
+                {userRole === 'admin' && vehicleList.length > 0 && shouldShowPagination() && (
                     <div className="flex justify-center p-6 border-t border-gray-200 bg-gradient-to-r from-blue-50 to-blue-100">
                         <Pagination
                             className="pagination-data flex items-center"
