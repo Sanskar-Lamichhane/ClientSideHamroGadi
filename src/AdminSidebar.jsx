@@ -35,8 +35,8 @@ const adminSidebarItems = [
 const vendorSidebarItems = [
   { path: "/dashboard", icon: LayoutDashboard, label: "Dashboard" },
   { path: "/vehicles", icon: Car, label: "My Vehicles" },
-  { path: "/intrip", icon: MapPin, label: "In Trip" },
-  { path: "/approved", icon: CheckCircle, label: "Approved Trips" },
+  { path: "/intripVehicleList", icon: MapPin, label: "In Trip" },
+  { path: "/approvedVehicleList", icon: CheckCircle, label: "Approved Trips" },
   { path: "/completedVehicleList", icon: CheckCheck, label: "Completed Trips" },
   { path: "/cancelledVehicleList", icon: XCircle, label: "Cancelled Trips" },
   { path: "/rejectedVehicleList", icon: XCircle, label: "Rejected Trips" }

@@ -648,6 +648,7 @@ import { useParams } from 'react-router-dom';
 import { toast, Bounce } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 
+
 const RentalDetailsPage = () => {
   // Fetch user role from localStorage
   const [userRole, setUserRole] = useState(null);
@@ -808,6 +809,10 @@ const RentalDetailsPage = () => {
             status: "Cancelled",
             cancellation_message: reasonText
           }));
+          if(userRole==="customer"){
+            navigate("/MyBookings/cancelled")
+            return;
+          }
           navigate("/cancelledVehicleList")
           
         }
@@ -954,7 +959,7 @@ const RentalDetailsPage = () => {
   const currentStatus = rentalDetails.status || '';
 
   return (
-    <div className="bg-gray-50 min-h-screen p-4 mt-20">
+    <div className={`bg-gray-50 min-h-screen p-4 ${userRole==="customer"?"mt-20":""}`}>
       <div className="max-w-5xl mx-auto">
         <header className="flex justify-between items-center mb-6">
           <h1 className="text-2xl font-bold text-gray-800">Rental Details</h1>

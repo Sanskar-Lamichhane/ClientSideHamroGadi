@@ -1,10 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { FiPhoneCall, FiMail, FiMapPin, FiFacebook, FiTwitter, FiInstagram, FiLinkedin } from 'react-icons/fi';
+import { useEffect } from 'react';
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
-  
+
   return (
     <footer className="bg-gray-900 text-white">
       {/* Main Footer Section */}
@@ -17,18 +18,18 @@ const Footer = () => {
               Premium vehicle rental services for business and leisure. Experience comfort and reliability on every journey.
             </p>
             <div className="flex space-x-4">
-              <a href="#" className="text-gray-400 hover:text-white transition-colors">
+              <Link to="#" className="text-gray-400 hover:text-white transition-colors">
                 <FiFacebook size={20} />
-              </a>
-              <a href="#" className="text-gray-400 hover:text-white transition-colors">
+              </Link>
+              <Link to="#" className="text-gray-400 hover:text-white transition-colors">
                 <FiTwitter size={20} />
-              </a>
-              <a href="#" className="text-gray-400 hover:text-white transition-colors">
+              </Link>
+              <Link to="#" className="text-gray-400 hover:text-white transition-colors">
                 <FiInstagram size={20} />
-              </a>
-              <a href="#" className="text-gray-400 hover:text-white transition-colors">
+              </Link>
+              <Link to="#" className="text-gray-400 hover:text-white transition-colors">
                 <FiLinkedin size={20} />
-              </a>
+              </Link>
             </div>
           </div>
 

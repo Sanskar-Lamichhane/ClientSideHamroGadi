@@ -221,7 +221,7 @@ useEffect(() => {
             </li>
             <li>
               <Link 
-                to="/MyBookings" 
+                to="/MyBookings/pending" 
                 className={getNavItemClasses('/MyBookings')}
               >
                 <FiCalendar className="text-gray-700" size={18} />

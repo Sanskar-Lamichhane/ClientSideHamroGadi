@@ -877,9 +877,9 @@ function VehiclesPage() {
                                             </span>
                                         </td>
                                         <td className="p-4 text-right">
-                                            <button className="bg-blue-500 text-white px-3 py-1 rounded-lg hover:bg-blue-600 flex items-center justify-center ml-auto transition-colors">
+                                            <Link to="/vehicleEditPage" className="bg-blue-500 text-white px-3 py-1 rounded-lg hover:bg-blue-600 flex items-center justify-center ml-auto transition-colors">
                                                 <Eye size={14} className="mr-1" /> View
-                                            </button>
+                                                </Link>
                                         </td>
                                     </tr>
                                 ))}

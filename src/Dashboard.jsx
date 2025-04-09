@@ -268,9 +268,15 @@ function Dashboard() {
     }
     };
 
-    const handleViewDetails = (vehicleId) => {
-        // Remove the console.log and directly navigate
-        navigate(`/singleRental/${vehicleId}`, { state: { id: vehicleId } });
+    const handleViewDetails = (bookingId) => {
+        // This will be handled by your routing logic later
+        console.log("Navigate to vehicle details page for:", bookingId);
+        if (userRole==="customer"){
+            navigate(`/MyBookings/${bookingId}`)
+            return
+        }
+        navigate(`/singleRental/${bookingId}`, { state: { id: bookingId } });
+        // For example: history.push(`/vehicle-details/${vehicleId}`);
     };
 
     return (

@@ -17,18 +17,39 @@ import OtpVerification from "./OtpVerification.jsx"
 import PasswordResetVerification from "./ResetPassword.jsx"
 import NotFound from "./404.jsx"
 import App2 from "./App2.jsx"
-import MyBookings from "./MyBookings.jsx"
-import VehicleDashboard from "./MyBookings.jsx"
+// import MyBookings from "./MyBookings.jsx"
+import {VehicleDashboard} from "./MyBookings.jsx"
 import RentalDetailsPage from "./singleRentalPage.jsx"
 import ProfileManagement from "./ProfileManagementPage.jsx"
-import VehicleDetailsPage from "./SingleVehiclePage.jsx"
+import VehicleDetailsPage from "./SingleVehiclePage"
+import RentalConfirmation from "./PendingConfirmation.jsx"
+import PendingVehiclesDashboard from "./PendingVehicleList.jsx"
+import CancelledVehiclesDashboard from "./CancelledVehicleList.jsx"
+import ApprovedVehiclesDashboard from "./ApprovedVehicle.jsx"
+import CompletedVehiclesDashboard from "./CompletedVehicleList.jsx"
+import IntripVehiclesDashboard from "./IntripVehicleList.jsx"
+import RejectedVehiclesDashboard from "./RejectedVehicleList.jsx"
+import VehicleEditPage from "./VehicleEditPage.jsx"
 import Footer from "./Footer.jsx"
 
 
 function App1() {
   // Use selector to get user role (assuming you have a role in your store)
-  const userRole = useSelector(state => state?.user?.value?.role);  // Adjust based on how role is stored in Redux
-  console.log("hello",userRole)
+  // const userRole = useSelector(state => state?.user?.value?.role);  // Adjust based on how role is stored in Redux
+  // console.log("hello",userRole)
+  const getUserRole = () => {
+    const expiry = localStorage.getItem("expiry_date");
+    if (!expiry || new Date().getTime() > expiry) {
+        localStorage.removeItem("userRole");
+        localStorage.removeItem("expiry_date");
+        return null;
+    }
+    return localStorage.getItem("userRole");
+};
+
+const userRole = getUserRole();
+
+  
 
 
   return (
@@ -51,9 +72,18 @@ function App1() {
               <Route path="" element={<Cart />} />
             </Route>
 
-            {/* <Route path="/MyBookings" element={<MyBookings/>}/> */}
-            <Route path="/MyBookings" element={<ProtectedRoutes role='customer'/>}> 
+           
+            {/* <Route path="/MyBookings" element={<ProtectedRoutes role='customer'/>}> 
                             <Route path="" element={<VehicleDashboard />} />
+                            <Route path=":id" element={<RentalDetailsPage/>}/>
+                        </Route> */}
+                      <Route path="/MyBookings" element={<ProtectedRoutes role='customer'/>}> 
+                            <Route path="pending" element={<PendingVehiclesDashboard />} />
+                            <Route path="cancelled" element={<CancelledVehiclesDashboard/>}/>
+                            <Route path="approved" element={<ApprovedVehiclesDashboard/>}/>
+                            <Route path="completed" element={<CompletedVehiclesDashboard/>}/>
+                            <Route path="rejected" element={<RejectedVehiclesDashboard/>}/>
+                            <Route path="in-trip" element={<IntripVehiclesDashboard/>}/>
                             <Route path=":id" element={<RentalDetailsPage/>}/>
                         </Route>
             <Route path="/login" element={<Login />} />
@@ -63,9 +93,10 @@ function App1() {
             <Route path="/PasswordResetVerification" element={<PasswordResetVerification />} />
             <Route path="/profileManagement" element={<ProfileManagement/>}/>
             <Route path="/singleVehicle/:id" element={<VehicleDetailsPage/>}/>
+            <Route path="/rentalConfirmation/:id" element={<RentalConfirmation/>}/>
             <Route path="/404" element={<NotFound />} />
           </Routes>
-          <Footer/>
+          {userRole!=="admin" && userRole!=="vendor"?<Footer/>:null}
         </BrowserRouter>
     </>
   )

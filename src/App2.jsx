@@ -22,6 +22,7 @@ import IntripVehiclesDashboard from './IntripVehicleList';
 import PendingVehiclesDashboard from './PendingVehicleList';
 import VendorDashboard from './VendorsPage';
 import RentalDetailsPage from './singleRentalPage';
+import VehicleEditPage from "./VehicleEditPage.jsx"
 
 function App2() {
     return (
@@ -49,7 +50,9 @@ function App2() {
                         <Route path="/approvedVehicleList" element={<ApprovedVehiclesDashboard/>}/>
                         <Route path="intripVehicleList" element={<IntripVehiclesDashboard/>}/>
                         <Route path="/vendors" element={<VendorDashboard/>}/>
+                        <Route path="/vehicleEditPage" element={<VehicleEditPage/>}/>
                         <Route path="/singleRental/:id" element={<RentalDetailsPage/>}/>
+
                     </Routes>
                 </div>
             </div>

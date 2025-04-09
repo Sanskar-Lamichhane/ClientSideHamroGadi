@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Car, Eye, AlertCircle } from 'lucide-react';
 import axios from 'axios';
 import { toast, Bounce } from 'react-toastify';
-import { Link } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { VehicleDashboard } from './MyBookings';
 
 function CompletedVehiclesDashboard() {
     const [vehiclesList, setVehiclesList] = useState([]);
@@ -121,9 +121,15 @@ function CompletedVehiclesDashboard() {
     }
     };
 
-    const handleViewDetails = (vehicleId) => {
-        // Remove the console.log and directly navigate
-        navigate(`/singleRental/${vehicleId}`, { state: { id: vehicleId } });
+    const handleViewDetails = (bookingId) => {
+        // This will be handled by your routing logic later
+        console.log("Navigate to vehicle details page for:", bookingId);
+        if (userRole==="customer"){
+            navigate(`/MyBookings/${bookingId}`)
+            return
+        }
+        navigate(`/singleRental/${bookingId}`, { state: { id: bookingId } });
+        // For example: history.push(`/vehicle-details/${vehicleId}`);
     };
 
 
@@ -131,7 +137,10 @@ function CompletedVehiclesDashboard() {
     return (
         <div className="dashboard p-6 bg-gray-50 font-sans">
             {/* Cancelled Vehicles List Section */}
-            <div className="bg-white rounded-xl shadow-lg overflow-hidden">
+            {
+                userRole==="customer"?<VehicleDashboard/>:null
+            }
+            <div className={`bg-white rounded-xl shadow-lg ${userRole==="customer"?"container":""} overflow-hidden`}>
                 <div className="p-6 border-b bg-gradient-to-r from-blue-50 to-blue-100 flex justify-between items-center">
                     <h2 className="text-xl font-bold text-gray-800">Completed Vehicles</h2>
                     <span className="text-sm text-gray-600 font-medium">Total Completed: {vehiclesList.length}</span>
