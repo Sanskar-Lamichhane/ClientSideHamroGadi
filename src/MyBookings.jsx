@@ -48,7 +48,7 @@
 //     const fetchVehicles = (status) => {
 //         const token = localStorage.getItem("access_token");
 //         setLoading(true);
-        
+
 //         let endpoint = "";
 //         if (userRole === "vendor") {
 //             endpoint = "http://localhost:3000/api/vendor/rentalList";
@@ -72,8 +72,8 @@
 //             return;
 //         }
 
-//         axios.post(endpoint, 
-//             { status: status }, 
+//         axios.post(endpoint,
+//             { status: status },
 //             {
 //                 headers: {
 //                     Authorization: `Bearer ${token}`
@@ -111,7 +111,6 @@
 //     const handleStatusChange = (status) => {
 //         setCurrentStatus(status);
 //     };
-    
 
 //     return (
 //         <div className="dashboard p-6 bg-gray-50 font-sans mt-20 container">
@@ -123,8 +122,8 @@
 //                             key={status}
 //                             onClick={() => handleStatusChange(status)}
 //                             className={`flex-1 py-4 px-4 text-center font-medium transition-colors ${
-//                                 currentStatus === status 
-//                                 ? "bg-blue-400 text-white" 
+//                                 currentStatus === status
+//                                 ? "bg-blue-400 text-white"
 //                                 : "hover:bg-blue-100 text-gray-700"
 //                             }`}
 //                         >
@@ -148,7 +147,7 @@
 //                     <h2 className="text-xl font-bold text-gray-800">{currentStatus} Vehicles</h2>
 //                     <span className="text-sm text-gray-600 font-medium">Total: {vehiclesList.length}</span>
 //                 </div>
-                
+
 //                 {loading ? (
 //                     <div className="p-8 text-center text-gray-500">Loading vehicles...</div>
 //                 ) : (
@@ -199,7 +198,7 @@
 //                                             </span>
 //                                         </td>
 //                                         <td className="p-4 text-right">
-//                                             <button 
+//                                             <button
 //                                                 onClick={() => handleViewDetails(booking._id)}
 //                                                 className="bg-blue-400 text-white px-4 py-2 rounded-lg hover:opacity-70 flex items-center justify-center ml-auto transition-colors"
 //                                             >
@@ -208,7 +207,7 @@
 //                                         </td>
 //                                     </tr>
 //                                 ))}
-                                
+
 //                                 {vehiclesList.length === 0 && (
 //                                     <tr>
 //                                         <td colSpan="5" className="p-8 text-center text-gray-500">
@@ -225,19 +224,16 @@
 //     );
 // }
 
-
-
 // export default VehicleDashboard;
 
-
-import React, { useState, useEffect } from 'react';
-import { Clock, CheckCircle, Truck, XCircle, AlertCircle } from 'lucide-react';
-import { Link, useLocation } from 'react-router-dom';
+import React, { useState, useEffect } from "react";
+import { Clock, CheckCircle, Truck, XCircle, AlertCircle } from "lucide-react";
+import { Link, useLocation } from "react-router-dom";
 
 function VehicleDashboard() {
   const location = useLocation();
   const currentPath = location.pathname;
-  
+
   // Function to check if a path is active
   const isActive = (path) => {
     return currentPath.includes(path);
@@ -247,42 +243,54 @@ function VehicleDashboard() {
     <div className="mt-24 w-full bg-white shadow overflow-hidden container">
       <div className="flex w-full">
         <Link to="/MyBookings/pending" className="flex-1">
-          <div className={`${isActive('/pending') ? 'bg-blue-400 text-white border-b-2 border-blue-600' : 'bg-white text-gray-700 border-b-2 border-transparent hover:border-blue-400'} py-4 px-6 flex items-center justify-center cursor-pointer hover:bg-blue-50 transition-all duration-300 transform hover:scale-105 hover:text-blue-600 ${isActive('/pending') ? '' : 'hover:bg-blue-50'}`}>
+          <div
+            className={`${isActive("/pending") ? "bg-blue-400 text-white border-b-2 border-blue-600" : "bg-white text-gray-700 border-b-2 border-transparent hover:border-blue-400"} py-4 px-6 flex items-center justify-center cursor-pointer hover:bg-blue-50 transition-all duration-300 transform hover:scale-105 hover:text-blue-600 ${isActive("/pending") ? "" : "hover:bg-blue-50"}`}
+          >
             <Clock className="mr-2" size={20} />
             <span className="font-medium">Pending</span>
           </div>
         </Link>
-        
+
         <Link to="/MyBookings/approved" className="flex-1">
-          <div className={`${isActive('/approved') ? 'bg-blue-400 text-white border-b-2 border-blue-600' : 'bg-white text-gray-700 border-b-2 border-transparent hover:border-blue-400'} py-4 px-6 flex items-center justify-center cursor-pointer hover:bg-blue-50 transition-all duration-300 transform hover:scale-105 hover:text-blue-600 ${isActive('/approved') ? '' : 'hover:bg-blue-50'}`}>
+          <div
+            className={`${isActive("/approved") ? "bg-blue-400 text-white border-b-2 border-blue-600" : "bg-white text-gray-700 border-b-2 border-transparent hover:border-blue-400"} py-4 px-6 flex items-center justify-center cursor-pointer hover:bg-blue-50 transition-all duration-300 transform hover:scale-105 hover:text-blue-600 ${isActive("/approved") ? "" : "hover:bg-blue-50"}`}
+          >
             <CheckCircle className="mr-2" size={20} />
             <span className="font-medium">Approved</span>
           </div>
         </Link>
-        
+
         <Link to="/MyBookings/in-trip" className="flex-1">
-          <div className={`${isActive('/in-trip') ? 'bg-blue-400 text-white border-b-2 border-blue-600' : 'bg-white text-gray-700 border-b-2 border-transparent hover:border-blue-400'} py-4 px-6 flex items-center justify-center cursor-pointer hover:bg-blue-50 transition-all duration-300 transform hover:scale-105 hover:text-blue-600 ${isActive('/in-trip') ? '' : 'hover:bg-blue-50'}`}>
+          <div
+            className={`${isActive("/in-trip") ? "bg-blue-400 text-white border-b-2 border-blue-600" : "bg-white text-gray-700 border-b-2 border-transparent hover:border-blue-400"} py-4 px-6 flex items-center justify-center cursor-pointer hover:bg-blue-50 transition-all duration-300 transform hover:scale-105 hover:text-blue-600 ${isActive("/in-trip") ? "" : "hover:bg-blue-50"}`}
+          >
             <Truck className="mr-2" size={20} />
             <span className="font-medium">In Trip</span>
           </div>
         </Link>
-        
+
         <Link to="/MyBookings/completed" className="flex-1">
-          <div className={`${isActive('/completed') ? 'bg-blue-400 text-white border-b-2 border-blue-600' : 'bg-white text-gray-700 border-b-2 border-transparent hover:border-blue-400'} py-4 px-6 flex items-center justify-center cursor-pointer hover:bg-blue-50 transition-all duration-300 transform hover:scale-105 hover:text-blue-600 ${isActive('/completed') ? '' : 'hover:bg-blue-50'}`}>
+          <div
+            className={`${isActive("/completed") ? "bg-blue-400 text-white border-b-2 border-blue-600" : "bg-white text-gray-700 border-b-2 border-transparent hover:border-blue-400"} py-4 px-6 flex items-center justify-center cursor-pointer hover:bg-blue-50 transition-all duration-300 transform hover:scale-105 hover:text-blue-600 ${isActive("/completed") ? "" : "hover:bg-blue-50"}`}
+          >
             <CheckCircle className="mr-2" size={20} />
             <span className="font-medium">Completed</span>
           </div>
         </Link>
-        
+
         <Link to="/MyBookings/rejected" className="flex-1">
-          <div className={`${isActive('/rejected') ? 'bg-blue-400 text-white border-b-2 border-blue-600' : 'bg-white text-gray-700 border-b-2 border-transparent hover:border-blue-400'} py-4 px-6 flex items-center justify-center cursor-pointer hover:bg-blue-50 transition-all duration-300 transform hover:scale-105 hover:text-blue-600 ${isActive('/rejected') ? '' : 'hover:bg-blue-50'}`}>
+          <div
+            className={`${isActive("/rejected") ? "bg-blue-400 text-white border-b-2 border-blue-600" : "bg-white text-gray-700 border-b-2 border-transparent hover:border-blue-400"} py-4 px-6 flex items-center justify-center cursor-pointer hover:bg-blue-50 transition-all duration-300 transform hover:scale-105 hover:text-blue-600 ${isActive("/rejected") ? "" : "hover:bg-blue-50"}`}
+          >
             <XCircle className="mr-2" size={20} />
             <span className="font-medium">Rejected</span>
           </div>
         </Link>
-        
+
         <Link to="/MyBookings/cancelled" className="flex-1">
-          <div className={`${isActive('/cancelled') ? 'bg-blue-400 text-white border-b-2 border-blue-600' : 'bg-white text-gray-700 border-b-2 border-transparent hover:border-blue-400'} py-4 px-6 flex items-center justify-center cursor-pointer hover:bg-blue-50 transition-all duration-300 transform hover:scale-105 hover:text-blue-600 ${isActive('/cancelled') ? '' : 'hover:bg-blue-50'}`}>
+          <div
+            className={`${isActive("/cancelled") ? "bg-blue-400 text-white border-b-2 border-blue-600" : "bg-white text-gray-700 border-b-2 border-transparent hover:border-blue-400"} py-4 px-6 flex items-center justify-center cursor-pointer hover:bg-blue-50 transition-all duration-300 transform hover:scale-105 hover:text-blue-600 ${isActive("/cancelled") ? "" : "hover:bg-blue-50"}`}
+          >
             <AlertCircle className="mr-2" size={20} />
             <span className="font-medium">Cancelled</span>
           </div>

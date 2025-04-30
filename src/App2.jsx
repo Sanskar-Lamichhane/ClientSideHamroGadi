@@ -1,9 +1,9 @@
-
-import React from 'react';
+import React from "react";
 import { Routes, Route } from "react-router-dom";
 import AdminSidebar from "./AdminSidebar";
 import AdminNavbar from "./AdminNavbar";
 import Dashboard from "./Dashboard";
+import ProfileManagement from "./ProfileManagementPage.jsx";
 // import ApprovedPage from "./ApprovedPage";
 // import IntripPage from "./IntripPage";
 // import CancelledPage from "./CancelledPage";
@@ -11,53 +11,79 @@ import Dashboard from "./Dashboard";
 // import CompletedPage from "./CompletedPage";
 import VehiclesPage from "./VehiclesPage";
 import CustomersPage from "./CustomersPage";
-import CreateVehiclePage from './CreateVehicle';
-import BrandsPage from './Brands';
-import CategoriesPage from './Category';
-import CancelledVehiclesDashboard from './CancelledVehicleList';
-import CompletedVehiclesDashboard from './CompletedVehicleList';
-import RejectedVehiclesDashboard from './RejectedVehicleList';
-import ApprovedVehiclesDashboard from './ApprovedVehicle';
-import IntripVehiclesDashboard from './IntripVehicleList';
-import PendingVehiclesDashboard from './PendingVehicleList';
-import VendorDashboard from './VendorsPage';
-import RentalDetailsPage from './singleRentalPage';
-import VehicleEditPage from "./VehicleEditPage.jsx"
+import CreateVehiclePage from "./CreateVehicle";
+import BrandsPage from "./Brands";
+import CategoriesPage from "./Category";
+import CancelledVehiclesDashboard from "./CancelledVehicleList";
+import CompletedVehiclesDashboard from "./CompletedVehicleList";
+import RejectedVehiclesDashboard from "./RejectedVehicleList";
+import ApprovedVehiclesDashboard from "./ApprovedVehicle";
+import IntripVehiclesDashboard from "./IntripVehicleList";
+import PendingVehiclesDashboard from "./PendingVehicleList";
+import VendorDashboard from "./VendorsPage";
+import RentalDetailsPage from "./singleRentalPage";
+import VehicleEditPage from "./VehicleEditPage.jsx";
+import NotificationPage from "./Notification.jsx";
+import NotFound from "./404.jsx";
 
 function App2() {
-    return (
-        <div className="admin-dashboard flex h-screen">
-            <AdminSidebar />
-            <div className="admin-content flex-1 flex flex-col">
-                <AdminNavbar />
-                <div className="flex-1 overflow-y-auto p-4">
-                    <Routes>
-                        <Route path="/dashboard" element={<Dashboard />} />
-                        {/* <Route path="/approved" element={<ApprovedPage />} /> */}
-                        {/* <Route path="/intrip" element={<IntripPage />} /> */}
-                        {/* <Route path="/cancelled" element={<CancelledPage />} /> */}
-                        {/* <Route path="/rejected" element={<RejectedPage />} /> */}
-                        {/* <Route path="/completed" element={<CompletedPage />} /> */}
-                        <Route path="/vehicles" element={<VehiclesPage />} />
-                 <Route path="/CreateVehicle" element={<CreateVehiclePage/>}/>
-                        <Route path="/customers" element={<CustomersPage />} />
-                        {/* <Route path="/vendors" element={<VendorsPage />} /> */}
-                        <Route path="/brands" element={<BrandsPage />}/>
-                        <Route path="/type" element={<CategoriesPage/>}/>
-                        <Route path="/cancelledVehicleList" element={<CancelledVehiclesDashboard/>}/>
-                        <Route path="/completedVehicleList" element={<CompletedVehiclesDashboard/>}/>
-                        <Route path="/rejectedVehicleList" element={<RejectedVehiclesDashboard/>}/>
-                        <Route path="/approvedVehicleList" element={<ApprovedVehiclesDashboard/>}/>
-                        <Route path="intripVehicleList" element={<IntripVehiclesDashboard/>}/>
-                        <Route path="/vendors" element={<VendorDashboard/>}/>
-                        <Route path="/vehicleEditPage" element={<VehicleEditPage/>}/>
-                        <Route path="/singleRental/:id" element={<RentalDetailsPage/>}/>
-
-                    </Routes>
-                </div>
-            </div>
+  return (
+    <div className="admin-dashboard flex h-screen">
+      <AdminSidebar />
+      <div className="admin-content flex-1 flex flex-col">
+        <AdminNavbar />
+        <div className="flex-1 overflow-y-auto p-4">
+          <Routes>
+            <Route path="/dashboard" element={<Dashboard />} />
+            {/* <Route path="/approved" element={<ApprovedPage />} /> */}
+            {/* <Route path="/intrip" element={<IntripPage />} /> */}
+            {/* <Route path="/cancelled" element={<CancelledPage />} /> */}
+            {/* <Route path="/rejected" element={<RejectedPage />} /> */}
+            {/* <Route path="/completed" element={<CompletedPage />} /> */}
+            <Route path="/vehicles" element={<VehiclesPage />} />
+            <Route path="/CreateVehicle" element={<CreateVehiclePage />} />
+            <Route path="/customers" element={<CustomersPage />} />
+            {/* <Route path="/vendors" element={<VendorsPage />} /> */}
+            <Route path="/brands" element={<BrandsPage />} />
+            <Route path="/type" element={<CategoriesPage />} />
+            <Route
+              path="/cancelledVehicleList"
+              element={<CancelledVehiclesDashboard />}
+            />
+            <Route
+              path="/completedVehicleList"
+              element={<CompletedVehiclesDashboard />}
+            />
+            <Route
+              path="/rejectedVehicleList"
+              element={<RejectedVehiclesDashboard />}
+            />
+            <Route
+              path="/approvedVehicleList"
+              element={<ApprovedVehiclesDashboard />}
+            />
+            <Route
+              path="intripVehicleList"
+              element={<IntripVehiclesDashboard />}
+            />
+            <Route path="/vendors" element={<VendorDashboard />} />
+            <Route path="/vehicleEditPage/:id" element={<VehicleEditPage />} />
+            <Route path="/singleRental/:id" element={<RentalDetailsPage />} />
+            <Route
+              path="/administrative/profileManagement"
+              element={<ProfileManagement />}
+            />
+            <Route
+              path="/administrative/notifications"
+              element={<NotificationPage />}
+            />
+            {/* Add a catch-all route at the end that redirects to the 404 page */}
+            <Route path="*" element={<NotFound />} />
+          </Routes>
         </div>
-    );
+      </div>
+    </div>
+  );
 }
 
 export default App2;

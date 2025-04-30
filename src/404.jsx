@@ -8,7 +8,9 @@ export default function NotFound() {
         <div className="lg:w-1/2 p-8">
           <div className="max-w-xl mx-auto">
             <h1 className="text-7xl font-bold text-blue-600 mb-4">404</h1>
-            <h2 className="text-3xl font-bold text-gray-800 mb-6">Page Not Found</h2>
+            <h2 className="text-3xl font-bold text-gray-800 mb-6">
+              Page Not Found
+            </h2>
             <p className="text-lg text-gray-600 mb-8">
               Oops! The page you're looking for doesn't exist or has been moved.
             </p>
@@ -17,13 +19,7 @@ export default function NotFound() {
                 to="/"
                 className="px-6 py-3 bg-blue-600 text-white text-center font-medium rounded-lg hover:bg-blue-700 transition duration-300"
               >
-                Back to Home
-              </Link>
-              <Link
-                to="/contact-support"
-                className="px-6 py-3 bg-blue-100 text-blue-700 text-center font-medium rounded-lg hover:bg-blue-200 transition duration-300"
-              >
-                Contact Support
+                Back to Login
               </Link>
             </div>
           </div>
@@ -58,9 +54,6 @@ export default function NotFound() {
                   d="M9 5l7 7-7 7"
                 />
               </svg>
-              <Link to="/" className="hover:text-blue-600 hover:underline">
-                Go to our Home page
-              </Link>
             </li>
             <li className="flex items-start">
               <svg
@@ -96,7 +89,10 @@ export default function NotFound() {
                   d="M9 5l7 7-7 7"
                 />
               </svg>
-              <Link to="/signup" className="hover:text-blue-600 hover:underline">
+              <Link
+                to="/signup"
+                className="hover:text-blue-600 hover:underline"
+              >
                 Create a new account
               </Link>
             </li>

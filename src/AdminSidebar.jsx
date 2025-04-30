@@ -1,7 +1,5 @@
-
-
-import React from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import React from "react";
+import { Link, useLocation } from "react-router-dom";
 import {
   LayoutDashboard,
   CheckCircle,
@@ -12,9 +10,8 @@ import {
   CheckCheck,
   UserCircle,
   MapPin,
-  ChartBarStacked
-} from 'lucide-react';
-
+  ChartBarStacked,
+} from "lucide-react";
 
 // Admin sidebar items
 const adminSidebarItems = [
@@ -27,8 +24,8 @@ const adminSidebarItems = [
   { path: "/vehicles", icon: Car, label: "Vehicles" },
   { path: "/customers", icon: Users, label: "Customers" },
   { path: "/vendors", icon: Truck, label: "Vendors" },
-  {path :"/type", icon:ChartBarStacked, label:"Type"},
-  {path :"/brands", icon:Car, label:"Brands"}
+  { path: "/type", icon: ChartBarStacked, label: "Type" },
+  { path: "/brands", icon: Car, label: "Brands" },
 ];
 
 // Vendor sidebar items (customize as needed)
@@ -39,7 +36,7 @@ const vendorSidebarItems = [
   { path: "/approvedVehicleList", icon: CheckCircle, label: "Approved Trips" },
   { path: "/completedVehicleList", icon: CheckCheck, label: "Completed Trips" },
   { path: "/cancelledVehicleList", icon: XCircle, label: "Cancelled Trips" },
-  { path: "/rejectedVehicleList", icon: XCircle, label: "Rejected Trips" }
+  { path: "/rejectedVehicleList", icon: XCircle, label: "Rejected Trips" },
 ];
 
 function AdminSidebar() {
@@ -57,10 +54,11 @@ function AdminSidebar() {
   };
 
   const userRole = getUserRole();
-  
+
   // Determine sidebar items and panel name based on role
-  const sidebarItems = userRole === 'vendor' ? vendorSidebarItems : adminSidebarItems;
-  const panelName = userRole === 'vendor' ? "Vendor Panel" : "Admin Panel";
+  const sidebarItems =
+    userRole === "vendor" ? vendorSidebarItems : adminSidebarItems;
+  const panelName = userRole === "vendor" ? "Vendor Panel" : "Admin Panel";
 
   return (
     <div className="admin-sidebar w-64 bg-gray-800 text-white p-4">
@@ -74,9 +72,11 @@ function AdminSidebar() {
             to={item.path}
             className={`
               flex items-center p-3 mb-2 rounded transition-colors duration-200
-              ${location.pathname === item.path
-                ? 'bg-blue-600 text-white'
-                : 'hover:bg-gray-700 text-gray-300'}
+              ${
+                location.pathname === item.path
+                  ? "bg-blue-600 text-white"
+                  : "hover:bg-gray-700 text-gray-300"
+              }
             `}
           >
             <item.icon className="mr-3" size={20} />

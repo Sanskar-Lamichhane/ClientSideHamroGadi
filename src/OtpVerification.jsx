@@ -1,10 +1,10 @@
 import { Link, useLocation } from "react-router-dom";
 import { useRef, useEffect, useState } from "react";
 import { toast, Bounce } from "react-toastify";
-import 'react-toastify/dist/ReactToastify.css';
+import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { Oval } from 'react-loader-spinner'; // Import the spinner component
+import { Oval } from "react-loader-spinner"; // Import the spinner component
 
 export default function VerificationCodeVerification() {
   const codeInputs = useRef([]);
@@ -67,8 +67,9 @@ export default function VerificationCodeVerification() {
 
     setIsResending(true); // Set resend loading to true
 
-    axios.post("http://localhost:3000/api/resendEmail", { email })
-      .then(response => {
+    axios
+      .post("http://localhost:3000/api/resendEmail", { email })
+      .then((response) => {
         toast.success(response.data.message, {
           position: "top-right",
           autoClose: 1000,
@@ -81,7 +82,7 @@ export default function VerificationCodeVerification() {
           transition: Bounce,
         });
       })
-      .catch(error => {
+      .catch((error) => {
         if (error.response && error.response.status === 400) {
           toast.error(error.response.data.message, {
             position: "top-right",
@@ -137,7 +138,7 @@ export default function VerificationCodeVerification() {
           theme: "colored",
           transition: Bounce,
         });
-        navigate('/login');
+        navigate("/login");
       })
       .catch((error) => {
         if (error.response.status == 400) {
@@ -160,7 +161,7 @@ export default function VerificationCodeVerification() {
   };
 
   return (
-    <div className="w-full bg-white container">
+    <div className="w-full bg-white mt-24 container">
       <div className="container mx-auto px-4 py-8 flex flex-col lg:flex-row">
         {/* Left Side - Illustration */}
         <div className="hidden lg:block lg:w-1/2 p-8">
@@ -179,8 +180,16 @@ export default function VerificationCodeVerification() {
             </h2>
 
             <div className="mb-6">
-              <Link to="/login" className="text-blue-600 flex items-center hover:underline">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+              <Link
+                to="/login"
+                className="text-blue-600 flex items-center hover:underline"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-5 w-5 mr-2"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                >
                   <path
                     fillRule="evenodd"
                     d="M9.707 14.707a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 1.414L7.414 9H15a1 1 0 110 2H7.414l2.293 2.293a1 1 0 010 1.414z"
@@ -235,7 +244,7 @@ export default function VerificationCodeVerification() {
                         width={24}
                         color="#ffffff"
                         visible={true}
-                        ariaLabel='oval-loading'
+                        ariaLabel="oval-loading"
                         secondaryColor="#ffffff"
                         strokeWidth={4}
                         strokeWidthSecondary={4}
@@ -264,7 +273,7 @@ export default function VerificationCodeVerification() {
                     width={24}
                     color="#ffffff"
                     visible={true}
-                    ariaLabel='oval-loading'
+                    ariaLabel="oval-loading"
                     secondaryColor="#ffffff"
                     strokeWidth={4}
                     strokeWidthSecondary={4}
