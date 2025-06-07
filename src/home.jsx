@@ -189,13 +189,13 @@ const HomePage = () => {
             </p>
             <div className="flex flex-wrap gap-4">
               <Link
-                to="/vehicles"
+                to="/product"
                 className="px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-full transition duration-300 shadow-lg hover:shadow-xl"
               >
                 Browse Vehicles
               </Link>
               <Link
-                to="/about"
+                to="/policy"
                 className="px-8 py-4 border-2 border-white text-white font-medium rounded-full hover:bg-white/10 transition duration-300"
               >
                 Learn More
@@ -516,7 +516,7 @@ const HomePage = () => {
                     </div>
                   </div>
                   <Link
-                    to={`/product`}
+                    to={`/singleVehicle/${vehicle._id}`}
                     className="block w-full py-3 bg-blue-600 hover:bg-blue-700 text-center text-white font-medium rounded-lg transition duration-300"
                   >
                     Rent Now
@@ -609,10 +609,10 @@ const HomePage = () => {
               Book a Vehicle
             </Link>
             <Link
-              to="/about-us"
+              to="/policy"
               className="px-8 py-4 border-2 border-white text-white font-medium rounded-lg hover:bg-white/10 transition duration-300"
             >
-              About Us
+              Policy
             </Link>
           </div>
         </div>

@@ -27,30 +27,42 @@ const Footer = () => {
               Experience comfort and reliability on every journey.
             </p>
             <div className="flex space-x-4">
-              <Link
-                to="#"
+              <a
+                href="https://www.facebook.com/sanskar.lamichhane.75"
                 className="text-gray-400 hover:text-white transition-colors"
+                target="_blank"
+                rel="noopener noreferrer"
               >
                 <FiFacebook size={20} />
-              </Link>
-              <Link
-                to="#"
+              </a>
+
+              <a
+                href="https://x.com/i/flow/login"
                 className="text-gray-400 hover:text-white transition-colors"
+                target="_blank"
+                rel="noopener noreferrer"
               >
                 <FiTwitter size={20} />
-              </Link>
-              <Link
-                to="#"
+              </a>
+
+              <a
+                href="https://www.instagram.com/"
                 className="text-gray-400 hover:text-white transition-colors"
+                target="_blank"
+                rel="noopener noreferrer"
               >
                 <FiInstagram size={20} />
-              </Link>
-              <Link
-                to="#"
+              </a>
+
+              <a
+                href="https://www.linkedin.com/in/sanskar-lamichhane-b2aa31269/"
                 className="text-gray-400 hover:text-white transition-colors"
+                target="_blank"
+                rel="noopener noreferrer"
               >
                 <FiLinkedin size={20} />
-              </Link>
+              </a>
+
             </div>
           </div>
 
@@ -68,44 +80,22 @@ const Footer = () => {
               </li>
               <li>
                 <Link
-                  to="/vehicles"
+                  to="/product"
                   className="text-gray-400 hover:text-blue-400 transition-colors"
                 >
                   Browse Vehicles
                 </Link>
               </li>
+              
               <li>
                 <Link
-                  to="/about"
+                  to="/policy"
                   className="text-gray-400 hover:text-blue-400 transition-colors"
                 >
-                  About Us
+                  Terms & Conditions
                 </Link>
               </li>
-              <li>
-                <Link
-                  to="/locations"
-                  className="text-gray-400 hover:text-blue-400 transition-colors"
-                >
-                  Locations
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/blog"
-                  className="text-gray-400 hover:text-blue-400 transition-colors"
-                >
-                  Blog
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/contact"
-                  className="text-gray-400 hover:text-blue-400 transition-colors"
-                >
-                  Contact Us
-                </Link>
-              </li>
+              
             </ul>
           </div>
 

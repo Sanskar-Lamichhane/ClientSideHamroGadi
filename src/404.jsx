@@ -16,10 +16,10 @@ export default function NotFound() {
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
               <Link
-                to="/"
+                to="/dashboard"
                 className="px-6 py-3 bg-blue-600 text-white text-center font-medium rounded-lg hover:bg-blue-700 transition duration-300"
               >
-                Back to Login
+                Back to Dashboard
               </Link>
             </div>
           </div>
@@ -35,9 +35,7 @@ export default function NotFound() {
 
       <div className="container mx-auto px-4 py-8">
         <div className="max-w-3xl mx-auto bg-blue-50 p-6 rounded-lg">
-          <h3 className="text-xl font-semibold text-gray-800 mb-4">
-            Looking for something?
-          </h3>
+
           <ul className="space-y-3 text-gray-700">
             <li className="flex items-start">
               <svg
@@ -47,55 +45,11 @@ export default function NotFound() {
                 viewBox="0 0 24 24"
                 stroke="currentColor"
               >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M9 5l7 7-7 7"
-                />
+               
               </svg>
             </li>
-            <li className="flex items-start">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-6 w-6 text-blue-600 mr-2 flex-shrink-0"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M9 5l7 7-7 7"
-                />
-              </svg>
-              <Link to="/login" className="hover:text-blue-600 hover:underline">
-                Login to your account
-              </Link>
-            </li>
-            <li className="flex items-start">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-6 w-6 text-blue-600 mr-2 flex-shrink-0"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M9 5l7 7-7 7"
-                />
-              </svg>
-              <Link
-                to="/signup"
-                className="hover:text-blue-600 hover:underline"
-              >
-                Create a new account
-              </Link>
-            </li>
+             
+            
           </ul>
         </div>
       </div>

@@ -10,14 +10,13 @@ import { useState } from "react";
 import { Provider, useSelector } from "react-redux"; // Import useSelector to get user role
 import { store } from "./Redux/Store.js";
 import SingleProduct from "./SingleProductDetails.jsx";
-import Create from "./create.jsx";
 import ProtectedRoutes from "./ProtectedRoutes.jsx";
 import ForgotPassword from "./forgetPassword.jsx";
 import OtpVerification from "./OtpVerification.jsx";
 import PasswordResetVerification from "./ResetPassword.jsx";
 import NotFound from "./404.jsx";
 import App2 from "./App2.jsx";
-// import MyBookings from "./MyBookings.jsx"
+//import MyBookings from "./MyBookings.jsx"
 import { VehicleDashboard } from "./MyBookings.jsx";
 import RentalDetailsPage from "./singleRentalPage.jsx";
 import ProfileManagement from "./ProfileManagementPage.jsx";

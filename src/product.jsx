@@ -82,7 +82,7 @@ const Product = () => {
           response.data[0].meta_data || {
             total: 0,
             page: 1,
-            per_page: 25,
+            per_page: 6,
           },
         );
       } else {
@@ -91,7 +91,7 @@ const Product = () => {
         setMetadata({
           total: 0,
           page: 1,
-          per_page: 25,
+          per_page: 6,
         });
       }
     } catch (error) {
@@ -191,7 +191,7 @@ const Product = () => {
 
     // Keep only page and per_page
     searchParams.set("page", "1");
-    searchParams.set("per_page", "25");
+    searchParams.set("per_page", "6");
 
     // Update search params and reset search input
     setSearchParams(searchParams);
